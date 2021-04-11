@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider, Paper } from "@material-ui/core";
 
 import EditorScreen from "./screens/EditorScreen";
 import Header from "./components/Header";
@@ -14,10 +14,12 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Route path="/" component={Header} />
-        <Route path="/editor" component={EditorScreen} />
-        <Route path="/login" component={LoginScreen} />
-        <Route path="/login2" component={LoginScreen2} />
+        <Paper>
+          <Route path="/" component={Header} />
+          <Route path="/editor" component={EditorScreen} />
+          <Route path="/login" component={LoginScreen} />
+          <Route path="/login2" component={LoginScreen2} />
+        </Paper>
       </BrowserRouter>
     </ThemeProvider>
   );

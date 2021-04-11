@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
     textTransform : "none",
     '&:hover':{
       backgroundColor : "transparent"
-    }
+    },
+    fontFamily : "Railway",
   },
   toolbarMargin: {
     ...theme.mixins.toolbar,
@@ -108,7 +109,7 @@ const Header = ({ children }) => {
               />
             </Tabs>
             <Button
-              onClick={() => setValue(4)}
+              
               variant="contained"
               component={Link}
               to="/login"

@@ -1,21 +1,31 @@
 import React, { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import { getOutput } from "../actions/output";
-import CustomSelect from "../components/CustomSelect";
 import { java, cpp, python3 } from "../codeDefault/codeDefault";
-import { Button } from "@material-ui/core";
-import { Code as CodeIcon, DoneAll as DoneAllIcon } from "@material-ui/icons";
+import { Button,Box } from "@material-ui/core";
+import { Code as CodeIcon, DoneAll as DoneAllIcon, ArrowDropDown } from "@material-ui/icons";
 
-import { makeStyles,CircularProgress } from "@material-ui/core";
+import { makeStyles,CircularProgress,Menu,MenuItem } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   submit: {
-    backgroundColor: "green",
+    backgroundColor: theme.palette.primary,
+    color : "#FFF",
     "&:hover": {
       backgroundColor: "green",
       color: "white",
     },
   },
+  menu : {
+    backgroundColor : "#000",
+  },
+  menuItem : {
+    color : "white",
+    opacity : 0.7,
+    '&:hover':{
+      opacity : 1
+    }
+  }
 }));
 
 const EditorScreen = () => {
@@ -28,11 +38,23 @@ const EditorScreen = () => {
   const [cppDefault, setCppDefault] = useState(cpp);
 
   const [value, setValue] = useState("");
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState(null);
   const [isCompiling, setIsCompiling] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [language, setLanguage] = useState("java");
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const getSelectedLanguageName = () => {
+    switch(language){
+      case "cpp":
+        return "C++"
+      case "python3":
+        return "Python 3"
+      default :
+       return "Java"
+    }
+  }
 
   useEffect(() => {
     if (language === "java") setValue(javaDefault);
@@ -43,14 +65,14 @@ const EditorScreen = () => {
     }
   }, [language, javaDefault, cppDefault, python3Default]);
 
-  const handleLanguageChange = (e) => {
+  const handleLanguageChange = (lang) => {
     // console.log(e.target.value);
-    setLanguage(e.target.value);
-    if (e.target.name === "java") {
+    setLanguage(lang);
+    if (lang === "java") {
       setValue(javaDefault);
-    } else if (language === "cpp") {
+    } else if (lang === "cpp") {
       setValue(cppDefault);
-    } else if (language === "python3") {
+    } else if (lang === "python3") {
       setValue(python3Default);
     }
   };
@@ -86,7 +108,15 @@ const EditorScreen = () => {
     // setOutput(data.output);
   };
 
+  const handleMenuClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  }
+  const handleMenuClose = () =>{ 
+    setAnchorEl(null);
+  }
+
   return (
+
     <div
       className="editor"
       style={{
@@ -96,17 +126,44 @@ const EditorScreen = () => {
         margin: "auto",
       }}
     >
-      <div className="backdropBlack"></div>
 
-      <div>
-        <CustomSelect
-          language={language}
-          handleLanguageChange={handleLanguageChange}
-        />
-      </div>
+      <Box>
+      <Button onClick={handleMenuClick} endIcon={<ArrowDropDown />} variant="contained" color="primary">
+        {getSelectedLanguageName()}
+      </Button>
+      
+      <Menu
+        id="simple-menu"
+        classes={{paper : classes.menu}}
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={(handleMenuClose)}
+      >
+        <MenuItem classes={{root : classes.menuItem}}  onClick={() => {handleMenuClose()
+          handleLanguageChange("java")
+        }}>Java</MenuItem>
+        <MenuItem classes={{root : classes.menuItem}} onClick={() => {handleMenuClose()
+          handleLanguageChange("cpp")
+        }}>C++</MenuItem>
+        <MenuItem classes={{root : classes.menuItem}} onClick={() => {handleMenuClose()
+          handleLanguageChange("python3")
+        }}>Python 3</MenuItem>
+      </Menu>
+      </Box>
 
       <Editor
         height="60vh"
+        options={
+          {
+            minimap : {
+              enabled : false
+            },
+            suggest : {
+              showVariables : true
+            }
+          }
+        }
         defaultLanguage={language}
         defaultValue="// some comment"
         theme="vs-dark"
@@ -156,8 +213,8 @@ const EditorScreen = () => {
           )}
         </Button>
       </div>
-      <div>
-        <label style={{ display: "block", color: "black" }}>Output</label>
+      {output!==null && <div>
+        <label style={{ display: "block" }}>Output</label>
         <textarea
           rows={4}
           id="output"
@@ -165,7 +222,7 @@ const EditorScreen = () => {
           readOnly
           style={{ width: "100%", height: "100px" }}
         />
-      </div>
+      </div>}
     </div>
   );
 };
