@@ -11,10 +11,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.post('/script', async (req, res) => {
-    const {script, language} = req.body
+    const {script, language,stdin} = req.body
     
     const program = {
         "script" : script,
+        "stdin" : stdin,
         "language" : language,
         "versionIndex": "0",
         "clientId": `${process.env.CLIENT_ID}`,

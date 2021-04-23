@@ -1,9 +1,10 @@
 import axios from 'axios'
 
-export const getOutput = async (source, lang='java') => {
+export const getOutput = async (source, lang='java',input) => {
     const program = {
         script : source,
-        language: lang
+        language: lang,
+        stdin : input
     };
 
     const config = {

@@ -3,27 +3,17 @@ import { Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
-  useScrollTrigger,
   makeStyles,
   Tabs,
   Tab,
   Button,
 } from "@material-ui/core";
 
-const ElevationScroll = (props) => {
-  const { children } = props;
-
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-  });
-
-  return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
-  });
-};
 
 const useStyles = makeStyles((theme) => ({
+  appbar : {
+    height : '4em',
+  },
   title: {
     marginLeft: "10px",
     fontSize: "2rem",
@@ -33,9 +23,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor : "transparent"
     },
     fontFamily : "Railway",
-  },
-  toolbarMargin: {
-    ...theme.mixins.toolbar,
   },
   logo: {
     height: "5rem",
@@ -79,8 +66,8 @@ const Header = ({ children }) => {
 
   return (
     <>
-      <ElevationScroll>
-        <AppBar position="fixed" color="primary">
+
+        <AppBar elevation={0} className={classes.appbar} position="fixed" color="primary">
           <Toolbar disableGutters>
             <Button onClick={()=>setValue(0)} component={Link} to="/" className={classes.title}>Ace Coder</Button>
             <Tabs
@@ -120,8 +107,6 @@ const Header = ({ children }) => {
             </Button>
           </Toolbar>
         </AppBar>
-      </ElevationScroll>
-      <div className={classes.toolbarMargin} />
     </>
   );
 };
