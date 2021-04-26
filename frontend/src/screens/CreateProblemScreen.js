@@ -2,7 +2,9 @@ import React from "react";
 import { Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 
+import TextEditor from '../components/TextEditor/TextEditor';
 import EditorScreen from "./EditorScreen";
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -15,10 +17,9 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
   description: {
-    backgroundColor: "rgb(250, 250, 250)",
+    backgroundColor: "white",
     overflowY : 'auto',
     overflowX : 'hidden',
-    padding : '10px',
     height : '100%'
   },
   editor : {
@@ -26,17 +27,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProblemSolveScreen = () => {
+const CreateProblemScreen = () => {
   const classes = useStyles();
+
 
   return (
     <Paper className={classes.paper} >
       <Grid container className={classes.toolbarMargin} direction='row'>
-        <Grid container item  md={6} className={classes.description}>
+        <Grid container item  xs={6} className={classes.description}>
           
-          
+          <TextEditor />
         </Grid>
-        <Grid container item  md={6} className={classes.editor}>
+        <Grid container item  xs={6} className={classes.editor}>
           <EditorScreen />
         </Grid>
       </Grid>
@@ -44,4 +46,4 @@ const ProblemSolveScreen = () => {
   );
 };
 
-export default ProblemSolveScreen;
+export default CreateProblemScreen;

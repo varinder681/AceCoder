@@ -57,10 +57,12 @@ const Header = ({ children }) => {
       setValue(0);
     } else if (window.location.pathname === "/editor" && value !== 1) {
       setValue(1);
-    } else if (window.location.pathname === "/about" && value !== 2) {
-      setValue(2);
-    } else if (window.location.pathname === "/login" && value !== 3) {
+    } else if (window.location.pathname === "/create-problem" && value !== 2) {
+
+    } else if (window.location.pathname === "/about" && value !== 3) {
       setValue(3);
+    } else if (window.location.pathname === "/login" && value !== 4) {
+      setValue(4);
     }
   }, [value]);
 
@@ -87,6 +89,12 @@ const Header = ({ children }) => {
                 label="Editor"
                 component={Link}
                 to="/editor"
+              />
+              <Tab
+                className={classes.tab}
+                label="Create Problem"
+                component={Link}
+                to="/create-problem"
               />
               <Tab
                 className={classes.tab}

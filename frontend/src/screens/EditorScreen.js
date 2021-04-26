@@ -23,6 +23,12 @@ import {
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  container : {
+    width: "100%",
+    height : '100%',
+    position: "relative",
+    backgroundColor : 'white',
+  },
   header: {
     height: "6%",
     width: "100%",
@@ -243,7 +249,7 @@ const EditorScreen = () => {
         container
         item
         xs={12}
-        style={{ height: "15%", color: "white", border: "1px solid grey" }}
+        style={{ minHeight: "15%", color: "white", border: "1px solid grey" }}
       >
         <Button style={{backgroundColor : showTestcase ? 'grey' : null, borderRadius : 0}} onClick={()=>{setShowResult(false); setShowTestcase(true)}}>Testcase</Button>
         <Button style={{backgroundColor : showResult ? 'grey' : null, borderRadius : 0}} onClick={()=>{setShowResult(true); setShowTestcase(false)}}>Result</Button>
@@ -253,7 +259,7 @@ const EditorScreen = () => {
           onClick={() => setShowConsole(false)}
         ></Button>
       </Grid>
-      <Grid container style={{ height: "85%", overflowY: "scroll" }}>
+      <Grid container style={{ height: "80%", overflowY: "scroll" }}>
         {showResult && output && resultPanel }
         {showTestcase && testcasePanel}
       </Grid>
@@ -262,10 +268,7 @@ const EditorScreen = () => {
 
   return (
     <Grid
-      style={{
-        width: "100%",
-        position: "relative",
-      }}
+      className={classes.container}
     >
       <Grid className={classes.header}>
         <Button
@@ -277,8 +280,6 @@ const EditorScreen = () => {
           style={{
             height: "100%",
             borderRadius: 0,
-            top: 0,
-            position: "relative",
           }}
         >
           {getSelectedLanguageName()}
@@ -339,6 +340,7 @@ const EditorScreen = () => {
           setOptions={{
             showLineNumbers: true,
             tabSize: 4,
+            showPrintMargin : false,
           }}
         />
       </Grid>
