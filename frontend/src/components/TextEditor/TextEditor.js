@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Button, Grid } from "@material-ui/core";
 import Quill from "quill";
 
 import "quill/dist/quill.snow.css";
@@ -29,7 +30,7 @@ const TextEditor = ({ setContent }) => {
       editor.classList.add("editor");
       div.appendChild(editor);
     }
-    
+
     const q = new Quill(".editor", {
       theme: "snow",
       modules: {
@@ -37,9 +38,9 @@ const TextEditor = ({ setContent }) => {
       },
       // readOnly : true
     });
-    
-    q.on("text-change", (delta, oldDelta, source) => {});
 
+    q.on("text-change", (delta, oldDelta, source) => {});
+    q.setText(`Write the Problem Description here...`)
     setQuill(q);
   };
 
@@ -63,25 +64,84 @@ const TextEditor = ({ setContent }) => {
   };
 
   const disableUserInput = () => {
-      quill.disable()
+    quill.disable();
   };
   const enableUserInput = () => {
-    quill.enable()
-};
+    quill.enable();
+  };
 
   return (
     <>
-      <div
-        id="texteditor"
-        style={{ width: "100%", position: "relative" }}
-      ></div>
-      <div style={{ position: "absolute", left: 0, bottom: 0 }}>
-        <button onClick={getContents}>get Contents</button>
-        <button onClick={saveContents}>save Contents</button>
-        <button onClick={retreiveContents}>retreive Contents</button>
-        <button onClick={disableUserInput}>disable user input</button>
-        <button onClick={enableUserInput}>enable user input</button>
-      </div>
+      <Grid container item style={{ height: "100%",minHeight : '400px'  }}>
+        <Grid container item xs={12} style={{height : '10%'}}>
+          <input
+            placeholder="Title"
+            style={{ height: "2rem", width: "100%", }}
+          ></input>
+        </Grid>
+        <Grid
+          item
+          xs={9}
+          id="texteditor"
+          style={{ height: "90%"}}
+        ></Grid>
+
+        <Grid container item xs={3}>
+
+          <Grid container style={{height : '50%',border : '1px solid black',boxSizing : 'border-box'}} item xs={12}>
+            
+          </Grid>
+
+          <Grid container style={{height : '50%', border : '1px solid black',boxSizing : 'border-box'}} item xs={12} direction='column'>
+            <Grid item>
+              <Button
+                style={{ width: "100%" }}
+                variant="contained"
+                onClick={getContents}
+              >
+                get
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                style={{ width: "100%" }}
+                variant="contained"
+                onClick={saveContents}
+              >
+                save
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                style={{ width: "100%" }}
+                variant="contained"
+                onClick={retreiveContents}
+              >
+                retreive
+              </Button>
+            </Grid>
+
+            <Grid item>
+              <Button
+                style={{ width: "100%" }}
+                variant="contained"
+                onClick={disableUserInput}
+              >
+                disable
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                style={{ width: "100%" }}
+                variant="contained"
+                onClick={enableUserInput}
+              >
+                enable
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </>
   );
 };

@@ -7,22 +7,37 @@ import {
   Tabs,
   Tab,
   Button,
+  useMediaQuery,
+  useTheme,
+  SwipeableDrawer,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
 } from "@material-ui/core";
-
+import {
+  Menu as MenuIcon,
+  Home as HomeIcon,
+  Code as CodeIcon,
+  Create as CreateIcon,
+  Info as InfoIcon,
+  Person as PersonIcon
+} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
-  appbar : {
-    height : '4em',
+  appbar: {
+    height: "4rem",
+    zIndex: 1302,
   },
   title: {
     marginLeft: "10px",
     fontSize: "2rem",
-    color : "white",
-    textTransform : "none",
-    '&:hover':{
-      backgroundColor : "transparent"
+    color: "white",
+    textTransform: "none",
+    "&:hover": {
+      backgroundColor: "transparent",
     },
-    fontFamily : "Railway",
   },
   logo: {
     height: "5rem",
@@ -36,85 +51,151 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "700",
     fontSize: "1rem",
     minWidth: 10,
-    marginLeft: "25px"
+    marginLeft: "25px",
   },
-  login : {
-    marginRight : "25px",
-    marginLeft : "25px",
-    borderRadius : "15px",
+  login: {
+    marginRight: "25px",
+    marginLeft: "25px",
+    borderRadius: "15px",
+    "&:hover": {
+      color: "white",
+    },
+  },
+  menu: {
+    marginLeft: "auto",
+    margintRight: "1rem",
     '&:hover' : {
-      color : "white"
+      backgroundColor : 'transparent'
     }
-  }
+  },
+  drawer: {
+    paddingTop: "4rem",
+    backgroundColor : '#F3F3F3',
+    height : '100%'
+  },
+  listItem: {
+    textTransform: "none",
+    color : 'black'
+  },
 }));
+
+const routes = [
+  { name: "Home", link: "/", activeIndex: 0, icon: <HomeIcon /> },
+  { name: "Editor", link: "/editor", activeIndex: 1, icon: <CodeIcon /> },
+  {
+    name: "Create Problem",
+    link: "/create-problem",
+    activeIndex: 2,
+    icon: <CreateIcon />,
+  },
+  { name: "About Us", link: "/about-us", activeIndex: 3, icon: <InfoIcon /> },
+];
 
 const Header = ({ children }) => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
-    if (window.location.pathname === "/" && value !== 0) {
-      setValue(0);
-    } else if (window.location.pathname === "/editor" && value !== 1) {
-      setValue(1);
-    } else if (window.location.pathname === "/create-problem" && value !== 2) {
-
-    } else if (window.location.pathname === "/about" && value !== 3) {
-      setValue(3);
-    } else if (window.location.pathname === "/login" && value !== 4) {
-      setValue(4);
-    }
+    routes.forEach((route) => {
+      switch (window.location.pathname) {
+        case route.link:
+          setValue(route.activeIndex);
+          break;
+        default:
+          break;
+      }
+    });
   }, [value]);
+
+  const tabs = (
+    <>
+      <Tabs
+        value={value}
+        onChange={(e, newValue) => setValue(newValue)}
+        className={classes.tabContainer}
+        indicatorColor="primary"
+      >
+        {routes.map((route) => (
+          <Tab key={`${route.activeIndex} ${route.link}`}
+            className={classes.tab}
+            label={route.name}
+            component={Link}
+            to={route.link}
+          />
+        ))}
+      </Tabs>
+      <Button
+        variant="contained"
+        component={Link}
+        to="/login"
+        color="secondary"
+        className={classes.login}
+      >
+        Login
+      </Button>
+    </>
+  );
+
+  const drawer = (
+    <SwipeableDrawer
+      anchor="left"
+      open={openDrawer}
+      onOpen={() => setOpenDrawer(true)}
+      onClose={() => setOpenDrawer(false)}
+    >
+      <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        className={classes.drawer}
+      >
+        <List>
+          <ListItem>
+            <ListItemIcon><PersonIcon /></ListItemIcon>
+            <ListItemText>Sign In</ListItemText>
+          </ListItem>
+          {routes.map((route) => (
+            <ListItem key={`${route.activeIndex} ${route.link}`} component={Link} to={route.link} onClick={()=>setOpenDrawer(false)}>
+              <ListItemIcon>{route.icon}</ListItemIcon>
+              <ListItemText className={classes.listItem} disableTypography>{route.name}</ListItemText>
+            </ListItem>
+          ))}
+        </List>
+      </Grid>
+    </SwipeableDrawer>
+  );
 
   return (
     <>
-
-        <AppBar elevation={0} className={classes.appbar} position="fixed" color="primary">
-          <Toolbar disableGutters>
-            <Button onClick={()=>setValue(0)} component={Link} to="/" className={classes.title}>Ace Coder</Button>
-            <Tabs
-              value={value}
-              onChange={(e, newValue) => setValue(newValue)}
-              className={classes.tabContainer}
-              indicatorColor="primary"
-            >
-              <Tab
-                className={classes.tab}
-                label="Home"
-                component={Link}
-                to="/"
-              />
-              <Tab
-                className={classes.tab}
-                label="Editor"
-                component={Link}
-                to="/editor"
-              />
-              <Tab
-                className={classes.tab}
-                label="Create Problem"
-                component={Link}
-                to="/create-problem"
-              />
-              <Tab
-                className={classes.tab}
-                label="About Us"
-                component={Link}
-                to="/about"
-              />
-            </Tabs>
+      <AppBar
+        elevation={1}
+        className={classes.appbar}
+        position="fixed"
+        color="primary"
+      >
+        <Toolbar disableGutters>
+          <Button
+            onClick={() => setValue(0)}
+            component={Link}
+            to="/"
+            className={classes.title}
+          >
+            Ace Coder
+          </Button>
+          {isMd ? drawer : tabs}
+          {isMd && (
             <Button
-              
-              variant="contained"
-              component={Link}
-              to="/login"
-              color="secondary"
-              className={classes.login}
+              className={classes.menu}
+              onClick={() => setOpenDrawer((openDrawer) => !openDrawer)}
             >
-              Login
+              <MenuIcon />
             </Button>
-          </Toolbar>
-        </AppBar>
+          )}
+        </Toolbar>
+      </AppBar>
     </>
   );
 };

@@ -1,7 +1,32 @@
+#texteditor {
+    position: relative;
+}
 #texteditor .ql-toolbar.ql-snow {
-    position : sticky;
+    position : absolute;
     top : 0;
     background-color: #f3f3f3;
     width : 100%;
     z-index: 1;
+}
+
+.ql-editor {
+    overflow-y: scroll;
+    padding-top: 3.1rem;
+}
+
+#texteditor .ql-syntax {
+    color : darkblue;
+    background-color: #f3f3f3;
+}
+
+@media (max-width : 1258px) {
+    .ql-editor {
+        padding-top : 4.6rem;
+    }
+}
+
+@media (max-width : 700px) {
+    .ql-editor {
+        padding-top : 6.1rem;
+    }
 }

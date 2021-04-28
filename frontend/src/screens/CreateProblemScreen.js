@@ -1,48 +1,32 @@
 import React from "react";
-import { Grid, Paper } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+import { Route, Switch, Link } from "react-router-dom";
+import { Grid,Button } from "@material-ui/core";
+import ProblemDescription from "../components/ProblemDescription";
+import ProblemEditorial from "../components/ProblemEditorial";
 
-import TextEditor from '../components/TextEditor/TextEditor';
-import EditorScreen from "./EditorScreen";
-
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    height: "100vh",
-    overflowY : 'hidden',
-    overflowX : 'hidden'
-  },
-  toolbarMargin: {
-    paddingTop: "4em",
-    height: "100%",
-  },
-  description: {
-    backgroundColor: "white",
-    overflowY : 'auto',
-    overflowX : 'hidden',
-    height : '100%'
-  },
-  editor : {
-    
-  }
-}));
-
-const CreateProblemScreen = () => {
-  const classes = useStyles();
-
-
+const CreateProblemScreen = ({ match }) => {
   return (
-    <Paper className={classes.paper} >
-      <Grid container className={classes.toolbarMargin} direction='row'>
-        <Grid container item  xs={6} className={classes.description}>
-          
-          <TextEditor />
-        </Grid>
-        <Grid container item  xs={6} className={classes.editor}>
-          <EditorScreen />
-        </Grid>
+    <Grid container style={{ paddingTop: "4rem",minHeight : '100vh' }}>
+      <Grid container item xs={12} justify='center' style={{backgroundColor : '#f3f3f3',height : '10%'}}>
+        <Link style={{textDecoration : 'none'}} to={match.url + "/description"}><Button>Description</Button></Link>
+        <Link style={{textDecoration : 'none'}} to={`${match.url}/editorial`}><Button>Editorial</Button></Link>
       </Grid>
-    </Paper>
+
+      <Grid item xs={12} style={{padding : '1rem',minHeight : '90%'}}>
+        <Switch>
+          <Route
+            path={match.url + "/description"}
+            exact
+            component={ProblemDescription}
+          />
+          <Route
+            path={`${match.url}/editorial`}
+            exact
+            component={ProblemEditorial}
+          />
+        </Switch>
+      </Grid>
+    </Grid>
   );
 };
 
