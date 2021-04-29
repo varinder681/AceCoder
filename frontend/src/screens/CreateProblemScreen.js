@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, Link } from "react-router-dom";
+import { Route, Switch, Link,withRouter } from "react-router-dom";
 import { Grid,Button } from "@material-ui/core";
 import ProblemDescription from "../components/ProblemDescription";
 import ProblemEditorial from "../components/ProblemEditorial";
@@ -30,4 +30,4 @@ const CreateProblemScreen = ({ match }) => {
   );
 };
 
-export default CreateProblemScreen;
+export default withRouter(CreateProblemScreen);

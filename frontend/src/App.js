@@ -1,16 +1,18 @@
-import React from "react";
+import React,{Suspense} from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import { ThemeProvider, Paper } from "@material-ui/core";
 
 import Header from "./components/Header";
 import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from './screens/RegisterScreen'
 import Temp from './screens/Temp';
 import Home from './screens/Home'
 
 import theme from "./ui/Theme";
-import ProblemSolveScreen from "./screens/ProblemSolveScreen";
-import CreateProblemScreen from "./screens/CreateProblemScreen";
+const ProblemSolveScreen = React.lazy(()=> import('./screens/ProblemSolveScreen'))
+const CreateProblemScreen = React.lazy(()=>import("./screens/CreateProblemScreen"));
+
 
 const App = () => {
   return (
@@ -18,10 +20,11 @@ const App = () => {
       <BrowserRouter>
         <Header />
         <Paper>
-          <Route path="/editor" component={ProblemSolveScreen} />
-          <Route path="/login" component={LoginScreen} />
+          <Route path="/editor" render={() => <Suspense fallback={<div>Loading...</div>}><ProblemSolveScreen /></Suspense>} />
+          <Route path="/login" exact component={LoginScreen} />
+          <Route path='/register' exact component={RegisterScreen} />
           <Route path='/temp' component={Temp} />
-          <Route path='/create-problem' component={CreateProblemScreen} />
+          <Route path='/create-problem' render={()=><Suspense fallback={<div>Loading...</div>}><CreateProblemScreen /></Suspense>} />
           <Route path="/" exact component={Home} />
         </Paper>
       </BrowserRouter>

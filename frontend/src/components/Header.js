@@ -7,6 +7,7 @@ import {
   Tabs,
   Tab,
   Button,
+  ButtonGroup,
   useMediaQuery,
   useTheme,
   SwipeableDrawer,
@@ -22,7 +23,7 @@ import {
   Code as CodeIcon,
   Create as CreateIcon,
   Info as InfoIcon,
-  Person as PersonIcon
+  Person as PersonIcon,
 } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,28 +55,33 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "25px",
   },
   login: {
-    marginRight: "25px",
     marginLeft: "25px",
     borderRadius: "15px",
+    width : '90px',
     "&:hover": {
       color: "white",
     },
   },
+  signup : {
+    marginRight : '25px',
+    borderRadius : '15px',
+    width : '90px'
+  },
   menu: {
     marginLeft: "auto",
     margintRight: "1rem",
-    '&:hover' : {
-      backgroundColor : 'transparent'
-    }
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
   },
   drawer: {
     paddingTop: "4rem",
-    backgroundColor : '#F3F3F3',
-    height : '100%'
+    backgroundColor: "#F3F3F3",
+    height: "100%",
   },
   listItem: {
     textTransform: "none",
-    color : 'black'
+    color: "black",
   },
 }));
 
@@ -119,7 +125,8 @@ const Header = ({ children }) => {
         indicatorColor="primary"
       >
         {routes.map((route) => (
-          <Tab key={`${route.activeIndex} ${route.link}`}
+          <Tab
+            key={`${route.activeIndex} ${route.link}`}
             className={classes.tab}
             label={route.name}
             component={Link}
@@ -127,15 +134,26 @@ const Header = ({ children }) => {
           />
         ))}
       </Tabs>
-      <Button
-        variant="contained"
-        component={Link}
-        to="/login"
-        color="secondary"
-        className={classes.login}
-      >
-        Login
-      </Button>
+      <ButtonGroup>
+        <Button
+          variant="contained"
+          component={Link}
+          to="/login"
+          color="secondary"
+          className={classes.login}
+        >
+          Login
+        </Button>
+        <Button
+          variant="contained"
+          component={Link}
+          to="/register"
+          color="secondary"
+          className={classes.signup}
+        >
+          Sign Up
+        </Button>
+      </ButtonGroup>
     </>
   );
 
@@ -154,13 +172,28 @@ const Header = ({ children }) => {
       >
         <List>
           <ListItem>
-            <ListItemIcon><PersonIcon /></ListItemIcon>
+            <ListItemIcon>
+              <PersonIcon />
+            </ListItemIcon>
             <ListItemText>Sign In</ListItemText>
           </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <PersonIcon />
+            </ListItemIcon>
+            <ListItemText>Sign up</ListItemText>
+          </ListItem>
           {routes.map((route) => (
-            <ListItem key={`${route.activeIndex} ${route.link}`} component={Link} to={route.link} onClick={()=>setOpenDrawer(false)}>
+            <ListItem
+              key={`${route.activeIndex} ${route.link}`}
+              component={Link}
+              to={route.link}
+              onClick={() => setOpenDrawer(false)}
+            >
               <ListItemIcon>{route.icon}</ListItemIcon>
-              <ListItemText className={classes.listItem} disableTypography>{route.name}</ListItemText>
+              <ListItemText className={classes.listItem} disableTypography>
+                {route.name}
+              </ListItemText>
             </ListItem>
           ))}
         </List>

@@ -27,6 +27,12 @@ const onLoad = (e) => {
   // console.log("editor loaded");  
 };
 
+const languages = [
+  {name : 'Java', code: 'java'},
+  {name : 'C++' , code: 'cpp'},
+  {name : 'Python 3', code : 'python3'}
+]
+
 const EditorScreen = () => {
   const classes = useStyles();
 
@@ -246,35 +252,20 @@ const EditorScreen = () => {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          <MenuItem
-            classes={{ root: classes.menuItem }}
-            onClick={() => {
-              handleMenuClose();
-              handleLanguageChange("java");
-            }}
-          >
-            Java
-          </MenuItem>
-          <MenuItem
-            classes={{ root: classes.menuItem }}
-            onClick={() => {
-              handleMenuClose();
-              handleLanguageChange("cpp");
-            }}
-          >
-            C++
-          </MenuItem>
-          <MenuItem
-            classes={{ root: classes.menuItem }}
-            onClick={() => {
-              handleMenuClose();
-              handleLanguageChange("python3");
-            }}
-          >
-            Python 3
-          </MenuItem>
+          {languages.map(lang=> (
+            <MenuItem 
+              classes={{root:classes.menuItem}}
+              onClick={() => {
+                handleMenuClose();
+                handleLanguageChange(lang.code);
+              }}
+            >
+              {lang.name}
+            </MenuItem>
+          ))}
         </Menu>
       </Grid>
+      
       <Grid className={classes.editor}>
         <AceEditor
           placeholder="Placeholder Text"

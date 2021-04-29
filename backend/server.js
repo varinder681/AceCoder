@@ -1,45 +1,22 @@
 import express from 'express';
-import axios from 'axios'
 import path from 'path'
 import dotenv from 'dotenv'
+import {dbConnect} from './db/db.js';
+
+import codeExecutionRoutes from './routes/codeExecutionRoutes/codeExecutionRoutes.js' 
 
 dotenv.config();
+
+dbConnect();
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.post('/script', async (req, res) => {
-    const {script, language,stdin} = req.body
-    
-    const program = {
-        "script" : script,
-        "stdin" : stdin,
-        "language" : language,
-        "versionIndex": "0",
-        "clientId": `${process.env.CLIENT_ID}`,
-        "clientSecret":`${process.env.CLIENT_SECRET}`
-    }
 
-    const config = {
-        headers: {
-          "Content-Type": "application/json"
-        },
-      };
+app.use('/code',codeExecutionRoutes)
 
-    try {
-        const {data} = await axios.post('https://api.jdoodle.com/v1/execute',program , config)
-        // console.log(program);
-        res.json(data);
-    } catch (error) {
-        console.log('error :')
-        console.log(error);
-        res.send(error);
-    }
-
-    
-})
 
 const __dirname = path.resolve();
 

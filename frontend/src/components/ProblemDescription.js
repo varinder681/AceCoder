@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX : 'hidden',
     minWidth : '600px',
     height : '100vh',
+    boxShadow : 'none'
   },
   toolbarMargin: {
     height: "100%",

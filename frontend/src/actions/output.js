@@ -14,7 +14,7 @@ export const getOutput = async (source, lang='java',input) => {
     }
 // console.log(program);
     try {
-        const {data} = await axios.post('/script', program, config);
+        const {data} = await axios.post('/code/execute', program, config);
         return data
     } catch (error) {
         console.log('error:', error);
