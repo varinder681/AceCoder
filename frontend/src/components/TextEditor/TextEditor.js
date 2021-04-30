@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid } from "@material-ui/core";
 import Quill from "quill";
+import {useDispatch,useSelector} from 'react-redux'
+import {handleDescriptionChange,handleDifficultyChange} from '../../actions/createProblemActions'
 
 import "quill/dist/quill.snow.css";
 import "./TextEditor.css";
@@ -18,11 +20,17 @@ const TOOLBAR_OPTIONS = [
   ["clean"],
 ];
 
-const TextEditor = ({ setContent }) => {
+const TextEditor = ({ id }) => {
+  
+  const dispatch = useDispatch();
+
+  const createProblem = useSelector(state => state.createProblem)
+  const {description,difficulty} = createProblem
+
   const [quill, setQuill] = useState(null);
 
   const createQuill = () => {
-    const div = document.getElementById("texteditor");
+    const div = document.getElementById(id);
     if (div) {
       div.innerHTML = null;
       const editor = document.createElement("div");
@@ -39,14 +47,21 @@ const TextEditor = ({ setContent }) => {
       // readOnly : true
     });
 
-    q.on("text-change", (delta, oldDelta, source) => {});
+    q.on("text-change", (delta, oldDelta, source) => {
+      dispatch(handleDescriptionChange(delta))
+    });
     q.setText(`Write the Problem Description here...`)
     setQuill(q);
   };
 
   useEffect(() => {
+    console.log('running')
     createQuill();
   }, []);
+
+  const handleDifficulty = (e) => {
+    dispatch(handleDifficultyChange(e.target.value))
+  }
 
   const getContents = () => {
     console.log(quill.getContents());
@@ -72,24 +87,24 @@ const TextEditor = ({ setContent }) => {
 
   return (
     <>
-      <Grid container item style={{ height: "100%",minHeight : '400px'  }}>
-        <Grid container item xs={12} style={{height : '10%'}}>
-          <input
-            placeholder="Title"
-            style={{ height: "2rem", width: "100%", }}
-          ></input>
-        </Grid>
+    <Grid container item xs={12} style={{ height: "100%",minHeight : '400px',}}>
         <Grid
           item
           xs={9}
           id="texteditor"
-          style={{ height: "90%"}}
+          style={{ height: "100%"}}
         ></Grid>
 
         <Grid container item xs={3}>
 
           <Grid container style={{height : '50%',border : '1px solid black',boxSizing : 'border-box'}} item xs={12}>
-            
+            <Grid item xs={12}>
+              <select value={difficulty} onChange={handleDifficulty}>
+                <option value='easy'>Easy</option>
+                <option value='medium'>Medium</option>
+                <option value='hard'>Hard</option>
+              </select>
+            </Grid>
           </Grid>
 
           <Grid container style={{height : '50%', border : '1px solid black',boxSizing : 'border-box'}} item xs={12} direction='column'>

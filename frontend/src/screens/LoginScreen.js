@@ -1,94 +1,112 @@
-import React from "react";
-import { Container, makeStyles, TextField, Button, Checkbox } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Paper, Grid, makeStyles, Button, TextField } from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../actions/userActions";
 
-
-import IconButton from '@material-ui/core/IconButton';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-
-const useStyle = makeStyles((theme) => ({
-  container: {
-    minHeight: "91vh",
-    minWidth: "100vw",
-    position: "relative",
-    padding: 0,
-    textAlign: "center",
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    height: "100vh",
+    minWidth: "350px",
   },
-  form: {
-    msTransformOrigin: "translate(50,50)",
-    height: "25rem",
-    width: "35vw",
-    border: "1px solid transparent",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)",
+  container: {
+    paddingTop: "4rem",
+    height: "100%",
+    // backgroundColor : '#000'
+  },
+  card: {
     padding: "2rem",
   },
-  
+  input: {},
 }));
+const LoginScreen = ({ history }) => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
-const LoginScreen = () => {
-  const classes = useStyle();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [values, setValues] = React.useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false,
-  });
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  useEffect(() => {
+    if (userInfo) {
+      history.push("/");
+    }
+  }, [userInfo, history]);
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user = {
+      email,
+      password,
+    };
+    dispatch(login(user));
   };
 
   return (
-    <Container className={classes.container}>
-      <Container className={classes.form}>
-        <form className={classes.root} noValidate autoComplete="off">
-        <InputLabel style={{fontSize : "2rem"}} >Sign In</InputLabel>
-          <TextField id="outlined-full-width" style={{ margin: 8 }} fullWidth label="Username" variant="outlined" />
-          <FormControl style={{ margin: 8 }} fullWidth variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            onChange={handleChange('password')}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            labelWidth={70}
-          />
-        </FormControl>
-        <label style={{fontSize: "1rem",width : "100%", textAlign : "left", margin : "8px"}} ><Checkbox /> Remember Me</label>
-        
-        <Button variant="contained" fullWidth color="primary" style={{margin : "8px"}} >Sign In</Button>
-        </form>
-      </Container>
-    </Container>
+    <>
+      <Paper className={classes.paper}>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          className={classes.container}
+        >
+          <Grid
+            container
+            spacing={2}
+            item
+            xs={10}
+            sm={8}
+            md={6}
+            lg={4}
+            className={classes.card}
+          >
+            <Grid container justify="center" item xs={12}>
+              Sign In
+            </Grid>
+
+            <Grid container justify="center" item xs={12}>
+              <TextField
+                id="outlined-email-address-input"
+                label="Email Address"
+                type="email"
+                variant="outlined"
+                style={{ width: "100%" }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Grid>
+            <Grid container justify="center" item xs={12}>
+              <TextField
+                id="outlined-password-input"
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                variant="outlined"
+                style={{ width: "100%" }}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Grid>
+            <Grid container justify="center" item xs={12}>
+              <Button
+                disabled={loading}
+                onClick={handleSubmit}
+                style={{ width: "100%" }}
+                variant="contained"
+              >
+                Sign In
+              </Button>
+              {error && error.error}
+            </Grid>
+            <Grid container item xs={12} justify='center'>
+              <Button onClick={()=>history.push('/register')} style={{ fontSize: "0.8rem" }}>Register Here</Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Paper>
+    </>
   );
 };
 

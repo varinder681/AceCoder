@@ -3,7 +3,8 @@ import path from 'path'
 import dotenv from 'dotenv'
 import {dbConnect} from './db/db.js';
 
-import codeExecutionRoutes from './routes/codeExecutionRoutes/codeExecutionRoutes.js' 
+import codeExecutionRoutes from './routes/codeExecutionRoutes.js' 
+import userRoutes from './routes/userRoutes.js'
 
 dotenv.config();
 
@@ -11,12 +12,13 @@ dbConnect();
 
 const app = express();
 
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 
 app.use('/code',codeExecutionRoutes)
-
+app.use('/user',userRoutes)
 
 const __dirname = path.resolve();
 

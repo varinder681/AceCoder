@@ -1,8 +1,6 @@
-import express from 'express'
-const router = express.Router()
-import axios from 'axios' 
+import axios from 'axios'
 
-router.post('/execute', async (req,res)=>{
+const execute = async (req, res) => {
     const {script, language,stdin} = req.body
     
     const program = {
@@ -28,6 +26,6 @@ router.post('/execute', async (req,res)=>{
         console.log(error);
         res.send(error);
     }
-})
+}
 
-export default router
+export {execute}

@@ -6,23 +6,36 @@ import EditorScreen from "./EditorScreen";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    height: "100vh",
+    height: '100vh',
     overflowY : 'hidden',
-    overflowX : 'hidden'
+    overflowX : 'hidden',
+    [theme.breakpoints.down('sm')] :{
+      height : '100%',
+      minWidth : '600px',
+      overflowX : 'auto'
+    },
   },
   toolbarMargin: {
     paddingTop: "4em",
-    height: "100%",
+    height: "100%"
   },
   description: {
-    backgroundColor: "rgb(250, 250, 250)",
+    backgroundColor: "#f3f3f3",
     overflowY : 'auto',
     overflowX : 'hidden',
     padding : '10px',
-    height : '100%'
+    height : '100%',
+    [theme.breakpoints.down('sm')] : {
+      height : '90vh',
+      padding : '1rem'
+    }
   },
   editor : {
-    
+    [theme.breakpoints.down('sm')]:{
+      height : '85vh',
+      minWidth : '600px',
+      padding : '1rem'
+    }
   }
 }));
 

@@ -11,7 +11,7 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-textmate";
 
-import { getOutput } from "../actions/output";
+import { getOutput } from "../actions/codeExecutionActions";
 import { java, cpp, python3 } from "../codeDefault/codeDefault";
 import { Button } from "@material-ui/core";
 import {
@@ -253,7 +253,7 @@ const EditorScreen = () => {
           onClose={handleMenuClose}
         >
           {languages.map(lang=> (
-            <MenuItem 
+            <MenuItem key={`${lang.code} ${lang.name}`}
               classes={{root:classes.menuItem}}
               onClick={() => {
                 handleMenuClose();

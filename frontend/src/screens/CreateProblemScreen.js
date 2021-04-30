@@ -6,13 +6,13 @@ import ProblemEditorial from "../components/ProblemEditorial";
 
 const CreateProblemScreen = ({ match }) => {
   return (
-    <Grid container style={{ paddingTop: "4rem",minHeight : '100vh' }}>
+    <Grid container style={{ paddingTop: "4rem",minHeight : '100vh'}}>
       <Grid container item xs={12} justify='center' style={{backgroundColor : '#f3f3f3',height : '10%'}}>
         <Link style={{textDecoration : 'none'}} to={match.url + "/description"}><Button>Description</Button></Link>
         <Link style={{textDecoration : 'none'}} to={`${match.url}/editorial`}><Button>Editorial</Button></Link>
       </Grid>
 
-      <Grid item xs={12} style={{padding : '1rem',minHeight : '90%'}}>
+      <Grid container item xs={12} style={{padding : '1rem',minHeight : '90%'}}>
         <Switch>
           <Route
             path={match.url + "/description"}

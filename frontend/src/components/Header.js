@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../actions/userActions";
+
 import {
   AppBar,
   Toolbar,
@@ -24,12 +27,14 @@ import {
   Create as CreateIcon,
   Info as InfoIcon,
   Person as PersonIcon,
+  ExitToApp as ExitToAppIcon,
 } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
     height: "4rem",
     zIndex: 1302,
+    backgroundColor: "black",
   },
   title: {
     marginLeft: "10px",
@@ -38,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "none",
     "&:hover": {
       backgroundColor: "transparent",
+    },
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1.4rem",
     },
   },
   logo: {
@@ -57,19 +65,20 @@ const useStyles = makeStyles((theme) => ({
   login: {
     marginLeft: "25px",
     borderRadius: "15px",
-    width : '90px',
+    width: "90px",
     "&:hover": {
       color: "white",
     },
   },
-  signup : {
-    marginRight : '25px',
-    borderRadius : '15px',
-    width : '90px'
+  signup: {
+    marginRight: "25px",
+    borderRadius: "15px",
+    width: "90px",
   },
   menu: {
     marginLeft: "auto",
     margintRight: "1rem",
+    color: "white",
     "&:hover": {
       backgroundColor: "transparent",
     },
@@ -97,12 +106,17 @@ const routes = [
   { name: "About Us", link: "/about-us", activeIndex: 3, icon: <InfoIcon /> },
 ];
 
-const Header = ({ children }) => {
+const Header = ({ history }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [value, setValue] = useState(0);
   const [openDrawer, setOpenDrawer] = useState(false);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   useEffect(() => {
     routes.forEach((route) => {
@@ -115,6 +129,13 @@ const Header = ({ children }) => {
       }
     });
   }, [value]);
+
+  const handleLogout = () => {
+    setOpenDrawer(false);
+    dispatch(logout());
+    history.push('/')
+    setValue(0)
+  };
 
   const tabs = (
     <>
@@ -131,29 +152,44 @@ const Header = ({ children }) => {
             label={route.name}
             component={Link}
             to={route.link}
+            draggable={false}
           />
         ))}
       </Tabs>
-      <ButtonGroup>
+      {!userInfo && (
+        <ButtonGroup>
+          <Button
+            variant="contained"
+            component={Link}
+            to="/login"
+            color="secondary"
+            className={classes.login}
+            draggable={false}
+          >
+            Login
+          </Button>
+          <Button
+            variant="contained"
+            component={Link}
+            to="/register"
+            color="secondary"
+            className={classes.signup}
+            draggable={false}
+          >
+            Sign Up
+          </Button>
+        </ButtonGroup>
+      )}
+      {userInfo && (
         <Button
           variant="contained"
-          component={Link}
-          to="/login"
           color="secondary"
-          className={classes.login}
+          className={`${classes.signup} ${classes.login}`}
+          onClick={handleLogout}
         >
-          Login
+          logout
         </Button>
-        <Button
-          variant="contained"
-          component={Link}
-          to="/register"
-          color="secondary"
-          className={classes.signup}
-        >
-          Sign Up
-        </Button>
-      </ButtonGroup>
+      )}
     </>
   );
 
@@ -171,18 +207,35 @@ const Header = ({ children }) => {
         className={classes.drawer}
       >
         <List>
-          <ListItem>
-            <ListItemIcon>
-              <PersonIcon />
-            </ListItemIcon>
-            <ListItemText>Sign In</ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemIcon>
-              <PersonIcon />
-            </ListItemIcon>
-            <ListItemText>Sign up</ListItemText>
-          </ListItem>
+          {!userInfo && (
+            <>
+              <ListItem
+                onClick={() => setOpenDrawer(false)}
+                component={Link}
+                to="login"
+              >
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.listItem}>
+                  Sign In
+                </ListItemText>
+              </ListItem>
+              <ListItem
+                onClick={() => setOpenDrawer(false)}
+                component={Link}
+                to="/register"
+              >
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.listItem}>
+                  Sign up
+                </ListItemText>
+              </ListItem>
+            </>
+          )}
+
           {routes.map((route) => (
             <ListItem
               key={`${route.activeIndex} ${route.link}`}
@@ -196,6 +249,19 @@ const Header = ({ children }) => {
               </ListItemText>
             </ListItem>
           ))}
+          {userInfo && (
+            <ListItem
+              onClick={handleLogout}
+              component={Link}
+              to="/login"
+              className={classes.listItem}
+            >
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText disableTypography>Logout</ListItemText>
+            </ListItem>
+          )}
         </List>
       </Grid>
     </SwipeableDrawer>
@@ -209,12 +275,13 @@ const Header = ({ children }) => {
         position="fixed"
         color="primary"
       >
-        <Toolbar disableGutters>
+        <Toolbar disableGutters style={{ height: "100%" }}>
           <Button
             onClick={() => setValue(0)}
             component={Link}
             to="/"
             className={classes.title}
+            draggable={false}
           >
             Ace Coder
           </Button>
