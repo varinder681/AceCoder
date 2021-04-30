@@ -1,7 +1,23 @@
-#texteditor {
+#problem-description,
+#problem-editorial {
     position: relative;
 }
-#texteditor .ql-toolbar.ql-snow {
+
+#problem-description .ql-toolbar.ql-snow,
+#problem-editorial .ql-toolbar.ql-snow {
+    position : absolute;
+    top : 0;
+    background-color: #f3f3f3;
+    width : 100%;
+    z-index: 1;
+}
+#problem-description,
+#problem-editorial {
+    position: relative;
+}
+
+#problem-description .ql-toolbar.ql-snow,
+#problem-editorial .ql-tooblar.ql-snow {
     position : absolute;
     top : 0;
     background-color: #f3f3f3;
@@ -14,7 +30,8 @@
     padding-top: 3.1rem;
 }
 
-#texteditor .ql-syntax {
+#problem-description .ql-syntax,
+#problem-editorial .ql-syntax {
     color : darkblue;
     background-color: #f3f3f3;
 }

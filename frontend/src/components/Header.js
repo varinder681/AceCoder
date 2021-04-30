@@ -212,7 +212,7 @@ const Header = ({ history }) => {
               <ListItem
                 onClick={() => setOpenDrawer(false)}
                 component={Link}
-                to="login"
+                to="/login"
               >
                 <ListItemIcon>
                   <PersonIcon />

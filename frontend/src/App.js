@@ -15,7 +15,7 @@ const ProblemSolveScreen = React.lazy(() =>
 );
 const CreateProblemScreen = React.lazy(() =>
   import("./screens/CreateProblemScreen")
-);
+); 
 
 const App = () => {
   return (

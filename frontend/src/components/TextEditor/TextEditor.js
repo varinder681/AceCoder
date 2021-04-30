@@ -55,7 +55,7 @@ const TextEditor = ({ id }) => {
   };
 
   useEffect(() => {
-    console.log('running')
+    console.log({id})
     createQuill();
   }, []);
 
@@ -91,7 +91,7 @@ const TextEditor = ({ id }) => {
         <Grid
           item
           xs={9}
-          id="texteditor"
+          id={id}
           style={{ height: "100%"}}
         ></Grid>
 
