@@ -96,7 +96,7 @@
           
         },
         {
-          title:"Inorder Traversal",
+          title:"Inorder Traversal and Backtracking",
           difficulty:"Hard",
           tag:"Apple",
           submissions:"38%"

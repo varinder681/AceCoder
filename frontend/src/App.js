@@ -7,7 +7,8 @@ import Header from "./components/Header";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import Temp from "./screens/Temp";
-import Home from "./screens/Home";
+
+import Home from "./screens/HomeScreen";
 
 import theme from "./ui/Theme";
 const ProblemSolveScreen = React.lazy(() =>
@@ -15,13 +16,14 @@ const ProblemSolveScreen = React.lazy(() =>
 );
 const CreateProblemScreen = React.lazy(() =>
   import("./screens/CreateProblemScreen")
-); 
+);
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-      <Route path='/' component={Header} />
+        <Route path="/" component={Header} />
+
         <Route
           path="/editor"
           render={() => (
@@ -41,7 +43,7 @@ const App = () => {
             </Suspense>
           )}
         />
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact render={() => <Home />} />
       </BrowserRouter>
     </ThemeProvider>
   );
