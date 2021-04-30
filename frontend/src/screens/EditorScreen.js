@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid,useMediaQuery,useTheme } from "@material-ui/core";
 import useStyles from './EditorScreen.Styles'
 import AceEditor from "react-ace";
 
@@ -18,6 +18,7 @@ import {
   Code as CodeIcon,
   DoneAll as DoneAllIcon,
   ArrowDropDown,
+  ExpandLess as ExpandLessIcon
 } from "@material-ui/icons";
 
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
@@ -35,7 +36,8 @@ const languages = [
 
 const EditorScreen = () => {
   const classes = useStyles();
-
+  const theme = useTheme();
+  const isMobileWidth = useMediaQuery(theme.breakpoints.down('xs'))
   const [javaDefault, setJavaDefault] = useState(java);
 
   const [python3Default, setPython3Default] = useState(python3);
@@ -294,15 +296,16 @@ const EditorScreen = () => {
             variant="outlined"
             color="primary"
             onClick={() => setShowConsole(true)}
+            className={classes.buttonsBottom}
             style={{
               outline: "none",
-              minWidth: "100px",
               marginRight: "5px",
               marginLeft: "10px",
               minHeigth: "24px",
             }}
-          >
-            Console
+            startIcon={isMobileWidth ? null : <ExpandLessIcon />}
+            >
+            {isMobileWidth ? <ExpandLessIcon /> : 'Console'}
           </Button>
         </Grid>
         <Grid container item xs={9} justify="flex-end">
@@ -312,6 +315,7 @@ const EditorScreen = () => {
               color="primary"
               onClick={handleCompile}
               disabled={isCompiling || isSubmitting}
+              className={classes.buttonsBottom}
               style={{
                 outline: "none",
                 minWidth: "100px",
@@ -329,11 +333,11 @@ const EditorScreen = () => {
               variant="contained"
               color="secondary"
               onClick={handleSubmiting}
-              className={classes.submit}
+              className={[classes.submit,classes.buttonsBottom].join(' ')}
               disabled={isSubmitting || isCompiling}
               startIcon={isSubmitting ? null : <DoneAllIcon />}
             >
-              {isSubmitting ? <CircularProgress size="1.5rem" /> : "Submit"}
+              {isSubmitting ? <CircularProgress size="1rem" /> : "Submit"}
             </Button>
           </Grid>
         </Grid>

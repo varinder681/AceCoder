@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX : 'hidden',
     [theme.breakpoints.down('sm')] :{
       height : '100%',
-      minWidth : '600px',
+      minWidth : '350px',
       overflowX : 'auto'
     },
   },
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   editor : {
     [theme.breakpoints.down('sm')]:{
       height : '85vh',
-      minWidth : '600px',
+      minWidth : '350px',
       padding : '1rem'
     }
   }
@@ -46,8 +46,7 @@ const ProblemSolveScreen = () => {
     <Paper className={classes.paper} >
       <Grid container className={classes.toolbarMargin} direction='row'>
         <Grid container item  md={6} className={classes.description}>
-          
-          
+          Description will be placed here
         </Grid>
         <Grid container item  md={6} className={classes.editor}>
           <EditorScreen />

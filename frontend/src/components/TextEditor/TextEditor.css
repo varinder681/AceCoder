@@ -1,6 +1,7 @@
 #problem-description,
 #problem-editorial {
     position: relative;
+    height: 80vh;
 }
 
 #problem-description .ql-toolbar.ql-snow,
@@ -25,9 +26,14 @@
     z-index: 1;
 }
 
+.ql-container {
+    height : 80vh;
+}
+
 .ql-editor {
     overflow-y: scroll;
     padding-top: 3.1rem;
+    height : 100%;
 }
 
 #problem-description .ql-syntax,
@@ -42,8 +48,27 @@
     }
 }
 
-@media (max-width : 700px) {
+@media (max-width : 715px) {
     .ql-editor {
         padding-top : 6.1rem;
+    }
+}
+
+@media (max-width : 600px) {
+    
+    .ql-editor {
+        padding-top : 4.6rem;
+    }
+}
+
+@media (max-width : 548px) {
+    .ql-editor  {
+        padding-top : 6.1rem;
+    }
+}
+
+@media (max-width : 415px) {
+    .ql-editor {
+        padding-top : 7.4rem;
     }
 }

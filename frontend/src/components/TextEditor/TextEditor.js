@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid,makeStyles } from "@material-ui/core";
 import Quill from "quill";
 import {useDispatch,useSelector} from 'react-redux'
 import {handleDescriptionChange,handleDifficultyChange} from '../../actions/createProblemActions'
@@ -20,12 +20,28 @@ const TOOLBAR_OPTIONS = [
   ["clean"],
 ];
 
+const useStyles = makeStyles( theme => ({
+  controlsContainer : {
+    height : '80vh',
+    [theme.breakpoints.down('xs')] : {
+      height : '30vh',
+    }
+  },
+  controls : {
+    height : '50%',
+    border : '1px solid black',
+    [theme.breakpoints.down('xs')] : {
+      height : '100%'
+    }
+  }
+}))
+
 const TextEditor = ({ id }) => {
-  
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const createProblem = useSelector(state => state.createProblem)
-  const {description,difficulty} = createProblem
+  const {difficulty} = createProblem
 
   const [quill, setQuill] = useState(null);
 
@@ -55,8 +71,9 @@ const TextEditor = ({ id }) => {
   };
 
   useEffect(() => {
-    console.log({id})
     createQuill();
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDifficulty = (e) => {
@@ -90,14 +107,15 @@ const TextEditor = ({ id }) => {
     <Grid container item xs={12} style={{ height: "100%",minHeight : '400px',}}>
         <Grid
           item
-          xs={9}
+          xs={12}
+          sm={9}
           id={id}
-          style={{ height: "100%"}}
+          
         ></Grid>
 
-        <Grid container item xs={3}>
+        <Grid container item xs={12} sm={3} className={classes.controlsContainer} alignItems='flex-start'>
 
-          <Grid container style={{height : '50%',border : '1px solid black',boxSizing : 'border-box'}} item xs={12}>
+          <Grid container className={classes.controls}  item xs={6} sm={12}>
             <Grid item xs={12}>
               <select value={difficulty} onChange={handleDifficulty}>
                 <option value='easy'>Easy</option>
@@ -107,10 +125,11 @@ const TextEditor = ({ id }) => {
             </Grid>
           </Grid>
 
-          <Grid container style={{height : '50%', border : '1px solid black',boxSizing : 'border-box'}} item xs={12} direction='column'>
+          <Grid container className={classes.controls} item xs={6} sm={12} direction='column'>
             <Grid item>
               <Button
                 style={{ width: "100%" }}
+              
                 variant="contained"
                 onClick={getContents}
               >
@@ -120,6 +139,7 @@ const TextEditor = ({ id }) => {
             <Grid item>
               <Button
                 style={{ width: "100%" }}
+              
                 variant="contained"
                 onClick={saveContents}
               >
@@ -129,6 +149,7 @@ const TextEditor = ({ id }) => {
             <Grid item>
               <Button
                 style={{ width: "100%" }}
+              
                 variant="contained"
                 onClick={retreiveContents}
               >
@@ -139,6 +160,7 @@ const TextEditor = ({ id }) => {
             <Grid item>
               <Button
                 style={{ width: "100%" }}
+              
                 variant="contained"
                 onClick={disableUserInput}
               >
@@ -148,6 +170,7 @@ const TextEditor = ({ id }) => {
             <Grid item>
               <Button
                 style={{ width: "100%" }}
+              
                 variant="contained"
                 onClick={enableUserInput}
               >

@@ -20,6 +20,11 @@ const useStyles = makeStyles((theme) => ({
       height: "10%",
       width: "100%",
     },
+    buttonsBottom : {
+      [theme.breakpoints.down('xs')] : {
+        fontSize : '0.6rem'
+      }
+    },
     submit: {
       backgroundColor: theme.palette.primary,
       color: "#FFF",
@@ -27,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
       "&:hover": {
         backgroundColor: "green",
         color: "white",
-      },
+      }
     },
     menu: {},
     menuItem: {
