@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { ThemeProvider } from "@material-ui/core";
 
+import ScrollToTop from './components/ScrollToTop'
 import Header from "./components/Header";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
@@ -22,13 +23,14 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+        <ScrollToTop />
         <Route path="/" component={Header} />
 
         <Route
-          path="/editor"
-          render={() => (
+          path="/problems/:title"
+          render={(props) => (
             <Suspense fallback={<div>Loading...</div>}>
-              <ProblemSolveScreen />
+              <ProblemSolveScreen {...props} />
             </Suspense>
           )}
         />

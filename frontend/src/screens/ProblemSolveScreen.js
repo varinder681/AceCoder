@@ -1,6 +1,9 @@
 import React from "react";
-import { Grid, Paper } from "@material-ui/core";
+import {useSelector} from 'react-redux'
+import { Grid, Paper,LinearProgress,Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
+
+import ProblemDescription from '../components/ProblemDescription'
 
 import EditorScreen from "./EditorScreen";
 
@@ -20,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
     height: "100%"
   },
   description: {
-    backgroundColor: "#f3f3f3",
+    backgroundColor: "#FFF",
     overflowY : 'auto',
     overflowX : 'hidden',
     padding : '10px',
     height : '100%',
     [theme.breakpoints.down('sm')] : {
-      height : '90vh',
-      padding : '1rem'
+      
+      padding : '1rem',
     }
   },
   editor : {
@@ -39,17 +42,22 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProblemSolveScreen = () => {
+const ProblemSolveScreen = (props) => {
   const classes = useStyles();
-
+  const getProblem = useSelector(state => state.getProblem)
+  const {loading, error} = getProblem
   return (
     <Paper className={classes.paper} >
       <Grid container className={classes.toolbarMargin} direction='row'>
-        <Grid container item  md={6} className={classes.description}>
-          Description will be placed here
+        {loading && <Grid item xs={12}>
+          <LinearProgress />
+        </Grid>}
+        
+        <Grid container item  md={6} className={classes.description} alignItems='flex-start'>
+          <ProblemDescription {...props} />
         </Grid>
         <Grid container item  md={6} className={classes.editor}>
-          <EditorScreen />
+          {!loading && <EditorScreen />}
         </Grid>
       </Grid>
     </Paper>

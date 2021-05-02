@@ -3,12 +3,16 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
 import {userRegisterReducer,userLoginReducer} from './reducers/userReducer'
-import {createProblemReducer} from './reducers/createProblemReducer'
+import {createProblemReducer,problemSubmitReducer} from './reducers/createProblemReducer'
+import {getProblemReducer, getProblemsAllReducer} from './reducers/problemReducer'
 
 const reducer = combineReducers({
     userRegister : userRegisterReducer,
     userLogin : userLoginReducer,
-    createProblem : createProblemReducer
+    createProblem : createProblemReducer,
+    problemSubmit : problemSubmitReducer,
+    getProblem : getProblemReducer,
+    getProblemsAll : getProblemsAllReducer
 })
 
 

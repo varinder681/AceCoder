@@ -1,28 +1,71 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import Quill from "quill";
+import { useDispatch, useSelector } from "react-redux";
+import { getProblemBySearchTitle } from "../actions/problemsActions";
 
-import { handleTitleChange } from "../actions/createProblemActions";
+import "quill/dist/quill.snow.css";
 
-import TextEditor from "./TextEditor/TextEditor";
+const ProblemDescription = ({ match, history }) => {
 
-const ProblemDescription = () => {
   const dispatch = useDispatch();
+  const [quill,setQuill] = useState(null)
+  const getProblem = useSelector((state) => state.getProblem);
+  const { problem, loading, error,success } = getProblem;
 
-  const [title, setTitle] = useState("");
+  const createQuill = () => {
+    const div = document.getElementById("problem-description-view");
+    if (div) {
+      div.innerHTML = null;
+      const editor = document.createElement("div");
+      editor.setAttribute("spellcheck", "false");
+      editor.classList.add("description-view");
+      div.appendChild(editor);
+    }
 
-  const handleChange = (e) => {
-    setTitle(e.target.value);
-    dispatch(handleTitleChange(e.target.value));
+    const q = new Quill(".description-view", {
+      theme: "snow",
+      modules: { toolbar: false },
+      //   readOnly : true
+    });
+
+    q.on("text-change", (delta, oldDelta, source) => {});
+    q.setText("description");
+    setQuill(q)
+    return q
   };
 
+  const getData = () => {
+    dispatch(getProblemBySearchTitle(match.params.title));
+  };
+
+  useEffect(() => {
+    getData();
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(()=>{
+    if(success){
+      const q = createQuill()
+      q.setContents(problem.description)
+      q.disable()
+    }
+  },[success,problem])
   return (
     <>
-      <input
-        onChange={handleChange}
-        value={title}
-        style={{ width: "100%", height: "5%",marginBottom : '1rem' }}
-      />
-      <TextEditor id="problem-description" />
+      {loading ? <div></div> : (
+        <>
+          <div style={{ width: "100%", padding: "1rem" }}>
+            {problem ? problem.title : ""}
+          </div>
+          <div
+            id="problem-description-view"
+            style={{ width: "100%" }}
+          ></div>
+          <div style={{ padding: "1rem" }}>show contributors</div>
+        </>
+      )}
+      
     </>
   );
 };

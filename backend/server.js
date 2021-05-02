@@ -5,6 +5,8 @@ import {dbConnect} from './db/db.js';
 
 import codeExecutionRoutes from './routes/codeExecutionRoutes.js' 
 import userRoutes from './routes/userRoutes.js'
+import createProblemRoutes from './routes/createProblemRoutes.js'
+import problemRoutes from './routes/problemsRoutes.js'
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ app.use(express.urlencoded({extended: true}));
 
 app.use('/code',codeExecutionRoutes)
 app.use('/user',userRoutes)
+app.use('/create-problem',createProblemRoutes)
+app.use('/problems',problemRoutes)
 
 const __dirname = path.resolve();
 

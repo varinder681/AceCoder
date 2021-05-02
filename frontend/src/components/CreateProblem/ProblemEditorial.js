@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch,useSelector } from "react-redux";
 
-import { handleTitleChange } from "../actions/createProblemActions";
+import { handleTitleChange } from "../../actions/createProblemActions";
 
 import TextEditor from "./TextEditor/TextEditor";
 
-const ProblemEditorial = () => {
+const CreateProblemEditorial = () => {
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState("");
+  const createProblem = useSelector(state => state.createProblem) 
+  const {title} = createProblem
 
   const handleChange = (e) => {
-    setTitle(e.target.value);
     dispatch(handleTitleChange(e.target.value));
   };
 
@@ -27,4 +27,4 @@ const ProblemEditorial = () => {
   );
 };
 
-export default ProblemEditorial;
+export default CreateProblemEditorial;

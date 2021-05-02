@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid,makeStyles } from "@material-ui/core";
 import Quill from "quill";
+import hljs from 'highlight.js'
 import {useDispatch,useSelector} from 'react-redux'
-import {handleDescriptionChange,handleDifficultyChange} from '../../actions/createProblemActions'
+import {handleDescriptionChange,handleDifficultyChange,handleEditorialChange} from '../../../actions/createProblemActions'
+
 
 import "quill/dist/quill.snow.css";
 import "./TextEditor.css";
+import 'highlight.js/styles/github-gist.css'
+
 
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -41,7 +45,7 @@ const TextEditor = ({ id }) => {
   const dispatch = useDispatch();
 
   const createProblem = useSelector(state => state.createProblem)
-  const {difficulty} = createProblem
+  const {description,editorial,difficulty,title,searchTitle} = createProblem
 
   const [quill, setQuill] = useState(null);
 
@@ -59,15 +63,33 @@ const TextEditor = ({ id }) => {
       theme: "snow",
       modules: {
         toolbar: TOOLBAR_OPTIONS,
+        syntax : id==='problem-editorial' ? {
+          highlight : text => hljs.highlightAuto(text).value 
+        } : false
       },
       // readOnly : true
     });
 
     q.on("text-change", (delta, oldDelta, source) => {
-      dispatch(handleDescriptionChange(delta))
+      if(id==='problem-description')
+        dispatch(handleDescriptionChange(delta))
+      else if(id==='problem-editorial')
+        dispatch(handleEditorialChange(delta))
     });
-    q.setText(`Write the Problem Description here...`)
-    setQuill(q);
+    if(id==='problem-description'){
+      if(description)
+        q.setContents(description)
+      else
+        q.setText(`Write the Problem Description here...`)
+    }
+    else if(id==='problem-editorial'){
+      if(editorial)
+        q.setContents(editorial)
+      else
+        q.setText('Wrte the Editorial here...')
+    }
+    
+      setQuill(q);
   };
 
   useEffect(() => {
@@ -80,18 +102,24 @@ const TextEditor = ({ id }) => {
     dispatch(handleDifficultyChange(e.target.value))
   }
 
-  const getContents = () => {
-    console.log(quill.getContents());
-  };
-
   const saveContents = () => {
     const delta = JSON.stringify(quill.getContents());
-
-    localStorage.setItem("delta", delta);
+    localStorage.setItem('problem-difficulty',JSON.stringify(difficulty))
+    localStorage.setItem('problem-title',JSON.stringify(title))
+    localStorage.setItem('problem-search-title',JSON.stringify(searchTitle))
+    if(id==='problem-description')
+      localStorage.setItem(`${id}-delta`, delta);
+    else if (id==='problem-editorial')
+      localStorage.setItem(`${id}-delta`, delta);
   };
 
   const retreiveContents = () => {
-    const delta = JSON.parse(localStorage.getItem("delta"));
+    let delta = null;
+    if(id==='problem-description')
+      delta = JSON.parse(localStorage.getItem(`${id}-delta`))
+    else if(id==='problem-editorial')
+      delta = JSON.parse(localStorage.getItem(`${id}-delta`))
+      
     quill.setContents(delta, "user");
   };
 
@@ -126,16 +154,7 @@ const TextEditor = ({ id }) => {
           </Grid>
 
           <Grid container className={classes.controls} item xs={6} sm={12} direction='column'>
-            <Grid item>
-              <Button
-                style={{ width: "100%" }}
-              
-                variant="contained"
-                onClick={getContents}
-              >
-                get
-              </Button>
-            </Grid>
+            
             <Grid item>
               <Button
                 style={{ width: "100%" }}

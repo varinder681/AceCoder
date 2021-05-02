@@ -96,14 +96,13 @@ const useStyles = makeStyles((theme) => ({
 
 const routes = [
   { name: "Home", link: "/", activeIndex: 0, icon: <HomeIcon /> },
-  { name: "Editor", link: "/editor", activeIndex: 1, icon: <CodeIcon /> },
   {
     name: "Create Problem",
     link: "/create-problem",
-    activeIndex: 2,
+    activeIndex: 1,
     icon: <CreateIcon />,
   },
-  { name: "About Us", link: "/about-us", activeIndex: 3, icon: <InfoIcon /> },
+  { name: "About Us", link: "/about-us", activeIndex: 2, icon: <InfoIcon /> },
 ];
 
 const Header = ({ history }) => {
