@@ -1,7 +1,7 @@
 #problem-description,
 #problem-editorial {
     position: relative;
-    height: 80vh;
+    height: 90vh;
 }
 
 #problem-description .ql-toolbar.ql-snow,
@@ -28,7 +28,8 @@
 
 #problem-description .ql-container,
 #problem-editorial .ql-container {
-    height : 80vh;
+    height : 90vh;
+    padding-top: 0.1rem;
 }
 
 #problem-description .ql-editor,

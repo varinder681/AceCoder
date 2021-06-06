@@ -1,27 +1,30 @@
-import React from 'react'
-import {useSelector,useDispatch} from 'react-redux'
-import {submitProblem} from '../../actions/createProblemActions'
+import React,{useState} from 'react'
+import {Grid,makeStyles} from '@material-ui/core'
+import EditorScreen from '../../screens/EditorScreen';
+import DriverCodeEditor from './DriverCodeEditor';
 
-import {Button} from '@material-ui/core'
-
-
-const CreateProblemSolution = () => {
-    const dispatch = useDispatch()
-    
-    const createProblem = useSelector(state => state.createProblem)
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        dispatch(submitProblem(createProblem))
+const useStyles = makeStyles(theme => ({
+    container : {
+        backgroundColor : 'grey',
+        height : '90vh'
     }
+}))
 
-
+const ProblemSolution = () => {
+    const classes = useStyles();
+    const [driverCode, setDriverCode] = useState("Write your Driver Code here");
     return (
-        <div>
-            Problem Solution
-            <Button variant='contained' onClick={handleSubmit}>Submit</Button>
-        </div>
+        <>
+            <Grid container item className={classes.container}>
+                <Grid container item xs={6} style={{}}>
+                    <DriverCodeEditor setDriverCode={setDriverCode} />
+                </Grid>
+                <Grid container item xs={6}>
+                    <EditorScreen driverCode={driverCode} />
+                </Grid>
+            </Grid>
+        </>
     )
 }
 
-export default CreateProblemSolution
+export default ProblemSolution

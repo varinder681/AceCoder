@@ -26,7 +26,7 @@ const TOOLBAR_OPTIONS = [
 
 const useStyles = makeStyles( theme => ({
   controlsContainer : {
-    height : '80vh',
+    height : '90vh',
     [theme.breakpoints.down('xs')] : {
       height : '30vh',
     }

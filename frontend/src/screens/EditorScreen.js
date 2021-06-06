@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid,useMediaQuery,useTheme } from "@material-ui/core";
-import useStyles from './EditorScreen.Styles'
+import useStyles from './EditorScreenStyles'
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/ext-language_tools";
@@ -34,7 +34,7 @@ const languages = [
   {name : 'Python 3', code : 'python3'}
 ]
 
-const EditorScreen = () => {
+const EditorScreen = ({driverCode="",problem}) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobileWidth = useMediaQuery(theme.breakpoints.down('xs'))
@@ -69,13 +69,26 @@ const EditorScreen = () => {
   };
 
   useEffect(() => {
-    if (language === "java") setValue(javaDefault);
-    else if (language === "cpp") {
+    
+    if (language === "java") {
+      if(problem && problem.defaultTemplate){
+        console.log(problem)
+        for(let i = 0; i<problem.defaultTemplate.length; i++){
+          if(language===problem.defaultTemplate[i].language){
+            setValue(problem.defaultTemplate[i].code);
+            break;
+          }
+        }
+      }
+      else
+        setValue(javaDefault);
+    }
+      else if (language === "cpp") {
       setValue(cppDefault);
     } else if (language === "python3") {
       setValue(python3Default);
     }
-  }, [language, javaDefault, cppDefault, python3Default]);
+  }, []);
 
   const handleLanguageChange = (lang) => {
     // console.log(e.target.value);
@@ -93,27 +106,29 @@ const EditorScreen = () => {
     }
   };
 
-  const handleEditorValueChange = (value) => {
-    setValue(value);
+  const handleEditorValueChange = (newValue) => {
+    console.log(newValue);
+    setValue(newValue);
     if (language === "java") {
-      setJavaDefault(value);
+      setJavaDefault(newValue);
     } else if (language === "cpp") {
-      setCppDefault(value);
+      setCppDefault(newValue);
     } else if (language === "python3") {
-      setPython3Default(value);
+      setPython3Default(newValue);
     }
   };
 
   const handleCompile = async () => {
-    setIsCompiling(true);
-    // console.log(language);
-    // console.log(value);
-    const data = await getOutput(value, language,input);
-    setIsCompiling(false);
-    setShowConsole(true);
-    setShowResult(true);
-    setShowTestcase(false);
-    setOutput(data.output);
+    if(input!==""){
+      setIsCompiling(true);
+      // console.log(language);
+      const data = await getOutput(value, language,input,problem);
+      setIsCompiling(false);
+      setShowConsole(true);
+      setShowResult(true);
+      setShowTestcase(false);
+      setOutput(data.output);
+    }
   };
 
   const handleSubmiting = async () => {
@@ -204,7 +219,7 @@ const EditorScreen = () => {
     </>
   );
 
-  const console = (
+  const consoleOutput = (
     <Grid item className={classes.output}>
       <Grid
         container
@@ -342,7 +357,7 @@ const EditorScreen = () => {
           </Grid>
         </Grid>
       </Grid>
-      {showConsole && console}
+      {showConsole && consoleOutput}
     </Grid>
   );
 };

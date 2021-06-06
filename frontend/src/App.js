@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider, LinearProgress, Grid } from "@material-ui/core";
 
-import ScrollToTop from './components/ScrollToTop'
+import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
@@ -40,7 +40,13 @@ const App = () => {
         <Route
           path="/create-problem"
           render={() => (
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense
+              fallback={
+                <Grid style={{ marginTop: "4rem" }}>
+                  <LinearProgress style={{ width: "100%" }} />
+                </Grid>
+              }
+            >
               <CreateProblemScreen />
             </Suspense>
           )}

@@ -28,6 +28,27 @@ const problemSchema = mongoose.Schema({
         type : Object,
         required : true
     },
+    testcase : [
+        {
+            input : {
+                type : String,
+                required : true,
+                default : ''
+            }        }
+    ],
+    defaultTemplate : [
+        {
+            language : {
+                type : String,
+                required : true,
+                default : ''
+            },
+            code : {
+                type : String,
+                required : true,
+            }
+        }
+    ],
     solution : [
         {
             language : {

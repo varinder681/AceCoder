@@ -23,7 +23,6 @@ import {
 import {
   Menu as MenuIcon,
   Home as HomeIcon,
-  Code as CodeIcon,
   Create as CreateIcon,
   Info as InfoIcon,
   Person as PersonIcon,

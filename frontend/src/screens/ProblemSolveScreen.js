@@ -1,6 +1,6 @@
 import React from "react";
 import {useSelector} from 'react-redux'
-import { Grid, Paper,LinearProgress,Box } from "@material-ui/core";
+import { Grid, Paper,LinearProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 
 import ProblemDescription from '../components/ProblemDescription'
@@ -44,8 +44,11 @@ const useStyles = makeStyles((theme) => ({
 
 const ProblemSolveScreen = (props) => {
   const classes = useStyles();
+  
   const getProblem = useSelector(state => state.getProblem)
-  const {loading, error} = getProblem
+  const {loading, error,problem} = getProblem
+
+
   return (
     <Paper className={classes.paper} >
       <Grid container className={classes.toolbarMargin} direction='row'>
@@ -57,7 +60,7 @@ const ProblemSolveScreen = (props) => {
           <ProblemDescription {...props} />
         </Grid>
         <Grid container item  md={6} className={classes.editor}>
-          {!loading && <EditorScreen />}
+          {!loading && <EditorScreen problem={problem} />}
         </Grid>
       </Grid>
     </Paper>
