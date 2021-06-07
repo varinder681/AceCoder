@@ -18,7 +18,9 @@ export const submit = async (req, res) => {
                     searchTitle : problem.searchTitle,
                     description : (problem.description),
                     editorial : (problem.editorial),
-                    difficulty : problem.difficulty
+                    difficulty : problem.difficulty,
+                    solution : problem.solution,
+                    defaultTemplate : problem.defaultTemplate
                 })
                 if(newProblem){
                     res.status(200)
@@ -27,7 +29,9 @@ export const submit = async (req, res) => {
                         title : newProblem.title,
                         searchTitle : problem.searchTitle,
                         description : newProblem.description,
-                        difficulty : newProblem.difficulty
+                        difficulty : newProblem.difficulty,
+                        solution : problem.solution,
+                        defaultTemplate : problem.defaultTemplate
                     })
                 }                
             } catch (error) {

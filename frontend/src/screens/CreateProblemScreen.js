@@ -4,6 +4,8 @@ import { Grid, Button } from "@material-ui/core";
 import ProblemDescription from "../components/CreateProblem/ProblemDescription";
 import ProblemEditorial from "../components/CreateProblem/ProblemEditorial";
 import ProblemSolution from "../components/CreateProblem/ProblemSolution";
+import ProblemSubmit from "../components/CreateProblem/ProblemSubmit";
+
 
 const CreateProblemScreen = ({ match }) => {
   return (
@@ -29,6 +31,9 @@ const CreateProblemScreen = ({ match }) => {
           </Link>
           <Link style={{ textDecoration: "none" }} to={`${match.url}/solution`}>
             <Button>Solution</Button>
+          </Link>
+          <Link style={{ textDecoration: "none" }} to={`${match.url}/submit`}>
+            <Button>Submit</Button>
           </Link>
         </Grid>
       <Grid
@@ -56,6 +61,11 @@ const CreateProblemScreen = ({ match }) => {
               path={`${match.url}/solution`}
               exact
               component={ProblemSolution}
+            />
+            <Route
+              path={`${match.url}/submit`}
+              exact
+              component={ProblemSubmit}
             />
           </Switch>
         </Grid>

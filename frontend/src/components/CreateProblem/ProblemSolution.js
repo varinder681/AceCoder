@@ -1,30 +1,73 @@
-import React,{useState} from 'react'
-import {Grid,makeStyles} from '@material-ui/core'
-import EditorScreen from '../../screens/EditorScreen';
-import DriverCodeEditor from './DriverCodeEditor';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Grid, makeStyles, Button } from "@material-ui/core";
+import { Save as SaveIcon } from "@material-ui/icons";
 
-const useStyles = makeStyles(theme => ({
-    container : {
-        backgroundColor : 'grey',
-        height : '90vh'
-    }
-}))
+import {
+  defaultTemplateChange,
+  solutionChange,
+} from "../../actions/createProblemActions";
+
+import EditorScreen from "../../screens/EditorScreen";
+import DriverCodeEditor from "./DriverCodeEditor";
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    height: "90vh",
+  },
+}));
 
 const ProblemSolution = () => {
-    const classes = useStyles();
-    const [driverCode, setDriverCode] = useState("Write your Driver Code here");
-    return (
-        <>
-            <Grid container item className={classes.container}>
-                <Grid container item xs={6} style={{}}>
-                    <DriverCodeEditor setDriverCode={setDriverCode} />
-                </Grid>
-                <Grid container item xs={6}>
-                    <EditorScreen driverCode={driverCode} />
-                </Grid>
-            </Grid>
-        </>
-    )
-}
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const [driverCode, setDriverCode] = useState("Write your Driver Code here");
+  const [driverCodeLanguage, setDriverCodeLanguage] = useState("java");
 
-export default ProblemSolution
+  const saveDriverCodeHandler = () => {
+    dispatch(solutionChange(driverCodeLanguage, driverCode));
+  };
+
+  const saveDefaultTemplateHandler = (defaultTemplate) => {
+    dispatch(defaultTemplateChange(driverCodeLanguage, defaultTemplate));
+  };
+
+  return (
+    <>
+      <Grid container item className={classes.container}>
+        <Grid container item xs={6} >
+          <Grid
+            container
+            item
+            xs={12}
+            justify="center"
+            style={{ height: "6%",borderBottom : "1px solid grey", boxSizing : 'border-box' }}
+          >
+            <Button
+              startIcon={<SaveIcon />}
+              variant="outlined"
+              style={{
+                height: "100%",
+                borderRadius: 0,
+                borderBottom : 'transparent'
+              }}
+              title="Save Current Driver Code"
+              onClick={saveDriverCodeHandler}
+            >
+              Save
+            </Button>
+          </Grid>
+          <DriverCodeEditor setDriverCode={setDriverCode} />
+        </Grid>
+        <Grid container item xs={6}>
+          <EditorScreen
+            isCreatingProblem={true}
+            saveDefaultTemplateHandler={saveDefaultTemplateHandler}
+            setDriverCodeLanguage={setDriverCodeLanguage}
+          />
+        </Grid>
+      </Grid>
+    </>
+  );
+};
+
+export default ProblemSolution;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Grid,useMediaQuery,useTheme } from "@material-ui/core";
-import useStyles from './EditorScreenStyles'
+import { Grid, useMediaQuery, useTheme } from "@material-ui/core";
+import useStyles from "./EditorScreenStyles";
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/ext-language_tools";
@@ -18,26 +18,32 @@ import {
   Code as CodeIcon,
   DoneAll as DoneAllIcon,
   ArrowDropDown,
-  ExpandLess as ExpandLessIcon
+  ExpandLess as ExpandLessIcon,
+  Save as SaveIcon
 } from "@material-ui/icons";
 
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
 
-
 const onLoad = (e) => {
-  // console.log("editor loaded");  
+  // console.log("editor loaded");
 };
 
 const languages = [
-  {name : 'Java', code: 'java'},
-  {name : 'C++' , code: 'cpp'},
-  {name : 'Python 3', code : 'python3'}
-]
+  { name: "Java", code: "java" },
+  { name: "C++", code: "cpp" },
+  { name: "Python 3", code: "python3" },
+];
 
-const EditorScreen = ({driverCode="",problem}) => {
+const EditorScreen = ({
+  driverCode = "",
+  problem,
+  setDriverCodeLanguage,
+  isCreatingProblem,
+  saveDefaultTemplateHandler,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isMobileWidth = useMediaQuery(theme.breakpoints.down('xs'))
+  const isMobileWidth = useMediaQuery(theme.breakpoints.down("xs"));
   const [javaDefault, setJavaDefault] = useState(java);
 
   const [python3Default, setPython3Default] = useState(python3);
@@ -69,21 +75,17 @@ const EditorScreen = ({driverCode="",problem}) => {
   };
 
   useEffect(() => {
-    
     if (language === "java") {
-      if(problem && problem.defaultTemplate){
-        console.log(problem)
-        for(let i = 0; i<problem.defaultTemplate.length; i++){
-          if(language===problem.defaultTemplate[i].language){
+      if (problem && problem.defaultTemplate) {
+        console.log(problem);
+        for (let i = 0; i < problem.defaultTemplate.length; i++) {
+          if (language === problem.defaultTemplate[i].language) {
             setValue(problem.defaultTemplate[i].code);
             break;
           }
         }
-      }
-      else
-        setValue(javaDefault);
-    }
-      else if (language === "cpp") {
+      } else setValue(javaDefault);
+    } else if (language === "cpp") {
       setValue(cppDefault);
     } else if (language === "python3") {
       setValue(python3Default);
@@ -93,6 +95,7 @@ const EditorScreen = ({driverCode="",problem}) => {
   const handleLanguageChange = (lang) => {
     // console.log(e.target.value);
     setLanguage(lang);
+    setDriverCodeLanguage(lang);
 
     if (lang === "java") {
       setMode("java");
@@ -119,10 +122,10 @@ const EditorScreen = ({driverCode="",problem}) => {
   };
 
   const handleCompile = async () => {
-    if(input!==""){
+    if (input !== "") {
       setIsCompiling(true);
       // console.log(language);
-      const data = await getOutput(value, language,input,problem);
+      const data = await getOutput(value, language, input, problem);
       setIsCompiling(false);
       setShowConsole(true);
       setShowResult(true);
@@ -151,28 +154,33 @@ const EditorScreen = ({driverCode="",problem}) => {
 
   const testcasePanel = (
     <>
-      <Grid container justify='center' direction='column' alignItems='center'>
-        <textarea onChange={ e => setInput(e.target.value)} value={input} spellCheck='false' style={{height : '50%', width : '80%', resize: 'none'}}></textarea>
+      <Grid container justify="center" direction="column" alignItems="center">
+        <textarea
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
+          spellCheck="false"
+          style={{ height: "50%", width: "80%", resize: "none" }}
+        ></textarea>
         <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleCompile}
-              disabled={isCompiling || isSubmitting}
-              style={{
-                outline: "none",
-                minWidth: "100px",
-                marginTop : '1rem',
-                minHeight: "24px",
-              }}
-              startIcon={isCompiling ? null : <CodeIcon />}
-            >
-              {isCompiling ? <CircularProgress size="1.5rem" /> : "Compile"}
-            </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCompile}
+            disabled={isCompiling || isSubmitting}
+            style={{
+              outline: "none",
+              minWidth: "100px",
+              marginTop: "1rem",
+              minHeight: "24px",
+            }}
+            startIcon={isCompiling ? null : <CodeIcon />}
+          >
+            {isCompiling ? <CircularProgress size="1.5rem" /> : "Compile"}
+          </Button>
         </Grid>
       </Grid>
     </>
-  ) 
+  );
 
   const resultPanel = (
     <>
@@ -227,8 +235,27 @@ const EditorScreen = ({driverCode="",problem}) => {
         xs={12}
         style={{ minHeight: "15%", color: "white", border: "1px solid grey" }}
       >
-        <Button style={{backgroundColor : showTestcase ? 'grey' : null, borderRadius : 0}} onClick={()=>{setShowResult(false); setShowTestcase(true)}}>Testcase</Button>
-        <Button className={classes.resultButton} onClick={()=>{setShowResult(true); setShowTestcase(false)}}>Result</Button>
+        <Button
+          style={{
+            backgroundColor: showTestcase ? "grey" : null,
+            borderRadius: 0,
+          }}
+          onClick={() => {
+            setShowResult(false);
+            setShowTestcase(true);
+          }}
+        >
+          Testcase
+        </Button>
+        <Button
+          className={classes.resultButton}
+          onClick={() => {
+            setShowResult(true);
+            setShowTestcase(false);
+          }}
+        >
+          Result
+        </Button>
         <Button
           endIcon={<ArrowDropDown />}
           style={{ marginLeft: "auto" }}
@@ -236,30 +263,45 @@ const EditorScreen = ({driverCode="",problem}) => {
         ></Button>
       </Grid>
       <Grid container style={{ height: "80%", overflowY: "scroll" }}>
-        {showResult && output && resultPanel }
+        {showResult && output && resultPanel}
         {showTestcase && testcasePanel}
       </Grid>
     </Grid>
   );
 
   return (
-    <Grid
-      className={classes.container}
-    >
+    <Grid className={classes.container}>
       <Grid className={classes.header}>
         <Button
           onClick={handleMenuClick}
           endIcon={<ArrowDropDown />}
           variant="outlined"
           color="primary"
-          elevation={0}
           style={{
             height: "100%",
             borderRadius: 0,
+            borderBottom : 'transparent'
           }}
         >
           {getSelectedLanguageName()}
         </Button>
+        {isCreatingProblem && (
+          <Button
+            title="Save following code as default template for this problem"
+            startIcon={<SaveIcon />}
+            variant="outlined"
+            style={{
+              height: "100%",
+              borderRadius: 0,
+              borderBottom : 'transparent'
+            }}
+            onClick={() => {
+              saveDefaultTemplateHandler(value);
+            }}
+          >
+            Save
+          </Button>
+        )}
 
         <Menu
           id="simple-menu"
@@ -269,9 +311,10 @@ const EditorScreen = ({driverCode="",problem}) => {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          {languages.map(lang=> (
-            <MenuItem key={`${lang.code} ${lang.name}`}
-              classes={{root:classes.menuItem}}
+          {languages.map((lang) => (
+            <MenuItem
+              key={`${lang.code} ${lang.name}`}
+              classes={{ root: classes.menuItem }}
               onClick={() => {
                 handleMenuClose();
                 handleLanguageChange(lang.code);
@@ -282,7 +325,7 @@ const EditorScreen = ({driverCode="",problem}) => {
           ))}
         </Menu>
       </Grid>
-      
+
       <Grid className={classes.editor}>
         <AceEditor
           placeholder="Placeholder Text"
@@ -301,7 +344,7 @@ const EditorScreen = ({driverCode="",problem}) => {
           setOptions={{
             showLineNumbers: true,
             tabSize: 4,
-            showPrintMargin : false,
+            showPrintMargin: false,
           }}
         />
       </Grid>
@@ -319,8 +362,8 @@ const EditorScreen = ({driverCode="",problem}) => {
               minHeigth: "24px",
             }}
             startIcon={isMobileWidth ? null : <ExpandLessIcon />}
-            >
-            {isMobileWidth ? <ExpandLessIcon /> : 'Console'}
+          >
+            {isMobileWidth ? <ExpandLessIcon /> : "Console"}
           </Button>
         </Grid>
         <Grid container item xs={9} justify="flex-end">
@@ -348,7 +391,7 @@ const EditorScreen = ({driverCode="",problem}) => {
               variant="contained"
               color="secondary"
               onClick={handleSubmiting}
-              className={[classes.submit,classes.buttonsBottom].join(' ')}
+              className={[classes.submit, classes.buttonsBottom].join(" ")}
               disabled={isSubmitting || isCompiling}
               startIcon={isSubmitting ? null : <DoneAllIcon />}
             >

@@ -5,7 +5,9 @@ import {
     PROBLEM_EDITORIAL_CHANGE,
     PROBLEM_SUBMIT_FAIL,
     PROBLEM_SUBMIT_REQUEST,
-    PROBLEM_SUBMIT_SUCCESS
+    PROBLEM_SUBMIT_SUCCESS,
+    PROBLEM_DEFAULT_TEMPLATE_CHANGE,
+    PROBLEM_SOLUTION_CHANGE
 } from '../constants/createProblemConstants'
 
 const initialState = {
@@ -14,6 +16,8 @@ const initialState = {
     editorial : localStorage.getItem('problem-editorial-delta') ? JSON.parse(localStorage.getItem('problem-editorial-delta')) : null,
     title : localStorage.getItem('problem-title') ? JSON.parse(localStorage.getItem('problem-title')) : '',
     searchTitle : localStorage.getItem('problem-search-title') ? JSON.parse(localStorage.getItem('problem-search-title')) : '',
+    defaultTemplate : [],
+    solution : []
 }
 
 export const createProblemReducer = (state=initialState,action) => {
@@ -39,6 +43,40 @@ export const createProblemReducer = (state=initialState,action) => {
             return {
                 ...state,
                 editorial : payload
+            }
+        case PROBLEM_DEFAULT_TEMPLATE_CHANGE:
+            const newDefaultTemplate = [...state.defaultTemplate];
+            let defaultTemplateExists = false;
+            for(let i=0; i<newDefaultTemplate.length; i++){
+                if(newDefaultTemplate[i].language === payload.language){
+                    defaultTemplateExists = true;
+                    newDefaultTemplate[i].code = payload.code;
+                    break;
+                }
+            }
+            if(!defaultTemplateExists){
+                newDefaultTemplate.push(payload);
+            }
+            return {
+                ...state,
+                defaultTemplate : newDefaultTemplate
+            }
+        case PROBLEM_SOLUTION_CHANGE:
+            const newSolution = [...state.solution];
+            let solutionExists = false;
+            for(let i=0; i<newSolution.length; i++){
+                if(newSolution[i].language === payload.language){
+                    solutionExists = true;
+                    newSolution[i].code = payload.code;
+                    break;
+                }
+            }
+            if(!solutionExists){
+                newSolution.push(payload);
+            }
+            return {
+                ...state,
+                solution : newSolution
             }
         default:
             return state;

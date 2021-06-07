@@ -6,7 +6,9 @@ import {
     PROBLEM_EDITORIAL_CHANGE,
     PROBLEM_SUBMIT_FAIL,
     PROBLEM_SUBMIT_REQUEST,
-    PROBLEM_SUBMIT_SUCCESS
+    PROBLEM_SUBMIT_SUCCESS,
+    PROBLEM_DEFAULT_TEMPLATE_CHANGE,
+    PROBLEM_SOLUTION_CHANGE
 } from '../constants/createProblemConstants'
 
 export const handleTitleChange = (title) => async dispatch => {
@@ -34,6 +36,20 @@ export const handleEditorialChange = (editorial) => async dispatch => {
     dispatch({
         type : PROBLEM_EDITORIAL_CHANGE,
         payload : editorial
+    })
+}
+
+export const defaultTemplateChange = (language,code) => async dispatch => {
+    dispatch({
+        type : PROBLEM_DEFAULT_TEMPLATE_CHANGE,
+        payload : {language,code}
+    })
+}
+
+export const solutionChange = (language,code) => async dispatch => {
+    dispatch({
+        type : PROBLEM_SOLUTION_CHANGE,
+        payload : {language,code}
     })
 }
 

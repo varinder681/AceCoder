@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme) => ({
     header: {
       height: "6%",
       width: "100%",
-      position: "relative",
+      borderBottom : "1px solid grey",
+      boxSizing : 'border-box'
     },
     editor: {
       height: "84%",

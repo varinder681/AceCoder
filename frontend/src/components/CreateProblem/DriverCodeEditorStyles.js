@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
       position: "relative",
     },
     editor: {
-      height: "90%",
+      height: "84%",
       width: "100%",
     },
     footer: {
