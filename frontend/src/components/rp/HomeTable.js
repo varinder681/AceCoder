@@ -82,7 +82,7 @@ const HomeTable = ({ questions }) => {
                     component="th"
                     scope="row"
                   >
-                    <Link className={classes.link} to={`/problems/${question.searchTitle}`} >{question.title}</Link>
+                    <Link className={classes.link} to={`/problem/${question.searchTitle}`} >{question.title}</Link>
                     
                   </TableCell>
                   <TableCell style={{ width: "60px" }} align="center">

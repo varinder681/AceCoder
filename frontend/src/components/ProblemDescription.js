@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
-import {Link} from 'react-router-dom'
-import { Grid, Button,ButtonGroup } from "@material-ui/core";
+
+import { Grid, Button } from "@material-ui/core";
 import Quill from "quill";
+import hljs from 'highlight.js'
 import { useDispatch, useSelector } from "react-redux";
 import { getProblemBySearchTitle } from "../actions/problemsActions";
 
 import "quill/dist/quill.snow.css";
+import 'highlight.js/styles/github-gist.css'
 
 const ProblemDescription = ({ match, history }) => {
   const dispatch = useDispatch();
-  const [quill, setQuill] = useState(null);
+  const [quillDescription, setQuillDescription] = useState(null);
+  const [quillEditorial, setQuillEditorial] = useState(null);
+  const [view, setView] = useState("description");
   const getProblem = useSelector((state) => state.getProblem);
   const { problem, loading, error, success } = getProblem;
 
-  const createQuill = () => {
+  const createQuillDescription = () => {
     const div = document.getElementById("problem-description-view");
     if (div) {
       div.innerHTML = null;
@@ -31,7 +35,33 @@ const ProblemDescription = ({ match, history }) => {
 
     q.on("text-change", (delta, oldDelta, source) => {});
     q.setText("description");
-    setQuill(q);
+    setQuillDescription(q);
+    return q;
+  };
+
+  const createQuillEditorial = () => {
+    const div = document.getElementById("problem-editorial");
+    if (div) {
+      div.innerHTML = null;
+      const editor = document.createElement("div");
+      editor.setAttribute("spellcheck", "false");
+      editor.classList.add("editorial");
+      div.appendChild(editor);
+    }
+
+    const q = new Quill(".editorial", {
+      theme: "snow",
+      modules: { 
+        toolbar: false,
+        syntax : {
+          highlight : text => hljs.highlightAuto(text).value 
+        }
+      },
+
+      //   readOnly : true
+    });
+    q.setText("Editorial");
+    setQuillEditorial(q);
     return q;
   };
 
@@ -47,33 +77,52 @@ const ProblemDescription = ({ match, history }) => {
 
   useEffect(() => {
     if (success) {
-      const q = createQuill();
-      q.setContents(problem.description);
-      q.disable();
+      const qDescription = createQuillDescription();
+      qDescription.setContents(problem.description);
+      setQuillDescription(qDescription);
+      qDescription.disable();
+
+      const qEditorial = createQuillEditorial();
+      qEditorial.setContents(problem.editorial);
+      setQuillEditorial(qEditorial);
+      qEditorial.disable();
+
     }
   }, [success, problem]);
+  
   return (
     <>
       {loading ? (
         <div></div>
       ) : (
-        <>
+        <Grid container alignItems="flex-start">
           <Grid container>
-            <Grid item>
-              <ButtonGroup>
-                <Button variant="contained" >Description</Button>
-                <Button variant="contained" >Solution</Button>
-                <Button variant="contained" >Discuss</Button>
-                <Button variant="contained" >Submissions</Button>
-              </ButtonGroup>
+            <Grid container item>
+                <Button variant="contained" onClick={()=>{
+                  setView("description")
+                }}>Description</Button>
+                <Button variant="contained" onClick={()=>{
+                  setView("editorial")
+                }}>Editorial</Button>
+                <Button variant="contained" onClick={()=>{
+                  setView("discuss")
+                }}>Discuss</Button>
+                <Button variant="contained" onClick={()=>{
+                  setView("submissions")
+                }}>Submissions</Button>
             </Grid>
           </Grid>
-          <div style={{ width: "100%", padding: "1rem" }}>
-            {problem ? problem.title : ""}
-          </div>
-          <div id="problem-description-view" style={{ width: "100%" }}></div>
-          <div style={{ padding: "1rem" }}>show contributors</div>
-        </>
+          <Grid container alignItems="flex-start">
+            <div style={{ width: "100%", padding: "1rem" }}>
+              {problem ? problem.title : ""}
+            </div>
+            <div id="problem-description-view" style={{ width: "100%", display: view==="description" ? "block" : "none" }}></div>
+            <div id="problem-editorial" style={{ width: "100%", display: view==="editorial" ? "block" : "none" }}></div>
+            <div id="problem-editorial" style={{ width: "100%", display: view==="discuss" ? "block" : "none" }}>Discuss feature will be added soon...</div>
+            <div id="problem-editorial" style={{ width: "100%", display: view==="submissions" ? "block" : "none" }}>Submissions feature will be added soon</div>
+            <div style={{ padding: "1rem" }}>show contributors</div>
+          </Grid>
+        </Grid>
       )}
     </>
   );

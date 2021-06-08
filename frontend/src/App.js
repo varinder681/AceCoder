@@ -27,7 +27,7 @@ const App = () => {
         <Route path="/" component={Header} />
 
         <Route
-          path="/problems/:title"
+          path="/problem/:title"
           render={(props) => (
             <Suspense fallback={<div>Loading...</div>}>
               <ProblemSolveScreen {...props} />
