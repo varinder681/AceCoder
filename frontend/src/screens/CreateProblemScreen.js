@@ -8,7 +8,7 @@ import ProblemSubmit from "../components/CreateProblem/ProblemSubmit";
 
 const CreateProblemScreen = ({ match }) => {
   return (
-    <Grid style={{height : '100vh'}}>
+      <>
       <Grid
         container
         item
@@ -85,7 +85,7 @@ const CreateProblemScreen = ({ match }) => {
           </Switch>
         </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 
