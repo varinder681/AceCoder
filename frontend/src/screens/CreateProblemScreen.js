@@ -6,46 +6,44 @@ import ProblemEditorial from "../components/CreateProblem/ProblemEditorial";
 import ProblemSolution from "../components/CreateProblem/ProblemSolution";
 import ProblemSubmit from "../components/CreateProblem/ProblemSubmit";
 
-
 const CreateProblemScreen = ({ match }) => {
   return (
-    <>
-    <Grid
-          container
-          item
-          xs={12}
-          justify="center"
-          style={{ backgroundColor: "#f3f3f3", height: "10%",paddingTop : "4rem" }}
+    <Grid style={{height : '100vh'}}>
+      <Grid
+        container
+        item
+        xs={12}
+        justify="center"
+        style={{
+          backgroundColor: "#f3f3f3",
+          height: "10%",
+          paddingTop: "4rem",
+        }}
+      >
+        <Link
+          style={{ textDecoration: "none" }}
+          to={match.url + "/description"}
         >
-          <Link
-            style={{ textDecoration: "none" }}
-            to={match.url + "/description"}
-          >
-            <Button>Description</Button>
-          </Link>
-          <Link
-            style={{ textDecoration: "none" }}
-            to={`${match.url}/editorial`}
-          >
-            <Button>Editorial</Button>
-          </Link>
-          <Link style={{ textDecoration: "none" }} to={`${match.url}/solution`}>
-            <Button>Solution</Button>
-          </Link>
-          <Link style={{ textDecoration: "none" }} to={`${match.url}/submit`}>
-            <Button>Submit</Button>
-          </Link>
-        </Grid>
+          <Button>Description</Button>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to={`${match.url}/editorial`}>
+          <Button>Editorial</Button>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to={`${match.url}/solution`}>
+          <Button>Solution</Button>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to={`${match.url}/submit`}>
+          <Button>Submit</Button>
+        </Link>
+      </Grid>
       <Grid
         container
         style={{
           // minHeight: "100vh",
-          minWidth: "300px"
+          minWidth: "300px",
         }}
       >
-        
-
-        <Grid container item xs={12} style={{height : '100%' }}>
+        <Grid container item xs={12} style={{ height: "100%" }}>
           <Switch>
             <Route
               path={match.url + "/description"}
@@ -67,10 +65,27 @@ const CreateProblemScreen = ({ match }) => {
               exact
               component={ProblemSubmit}
             />
+            <Route
+              path={`${match.url}/`}
+              exact
+              render={() => {
+                return (
+                  <Grid
+                    style={{
+                      border: "1px solid black",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  >
+                    follow the above steps
+                  </Grid>
+                );
+              }}
+            />
           </Switch>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

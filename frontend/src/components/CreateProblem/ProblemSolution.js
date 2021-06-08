@@ -61,6 +61,7 @@ const ProblemSolution = () => {
         <Grid container item xs={6}>
           <EditorScreen
             isCreatingProblem={true}
+            driverCode={driverCode}
             saveDefaultTemplateHandler={saveDefaultTemplateHandler}
             setDriverCodeLanguage={setDriverCodeLanguage}
           />

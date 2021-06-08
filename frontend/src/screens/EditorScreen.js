@@ -38,7 +38,7 @@ const EditorScreen = ({
   driverCode = "",
   problem,
   setDriverCodeLanguage,
-  isCreatingProblem,
+  isCreatingProblem=false,
   saveDefaultTemplateHandler,
 }) => {
   const classes = useStyles();
@@ -77,10 +77,10 @@ const EditorScreen = ({
   useEffect(() => {
     if (language === "java") {
       if (problem && problem.defaultTemplate) {
-        console.log(problem);
         for (let i = 0; i < problem.defaultTemplate.length; i++) {
           if (language === problem.defaultTemplate[i].language) {
             setValue(problem.defaultTemplate[i].code);
+            setJavaDefault(problem.defaultTemplate[i].code)
             break;
           }
         }
@@ -90,12 +90,14 @@ const EditorScreen = ({
     } else if (language === "python3") {
       setValue(python3Default);
     }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLanguageChange = (lang) => {
     // console.log(e.target.value);
     setLanguage(lang);
-    setDriverCodeLanguage(lang);
+    isCreatingProblem && setDriverCodeLanguage(lang);
 
     if (lang === "java") {
       setMode("java");
@@ -110,7 +112,7 @@ const EditorScreen = ({
   };
 
   const handleEditorValueChange = (newValue) => {
-    console.log(newValue);
+
     setValue(newValue);
     if (language === "java") {
       setJavaDefault(newValue);
@@ -125,7 +127,8 @@ const EditorScreen = ({
     if (input !== "") {
       setIsCompiling(true);
       // console.log(language);
-      const data = await getOutput(value, language, input, problem);
+      const data = await getOutput( isCreatingProblem ? `${value}\n${driverCode}` : value , language, input, problem, isCreatingProblem);
+      
       setIsCompiling(false);
       setShowConsole(true);
       setShowResult(true);

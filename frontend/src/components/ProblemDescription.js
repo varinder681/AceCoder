@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import {Link} from 'react-router-dom'
+import { Grid, Button,ButtonGroup } from "@material-ui/core";
 import Quill from "quill";
 import { useDispatch, useSelector } from "react-redux";
 import { getProblemBySearchTitle } from "../actions/problemsActions";
@@ -6,11 +8,10 @@ import { getProblemBySearchTitle } from "../actions/problemsActions";
 import "quill/dist/quill.snow.css";
 
 const ProblemDescription = ({ match, history }) => {
-
   const dispatch = useDispatch();
-  const [quill,setQuill] = useState(null)
+  const [quill, setQuill] = useState(null);
   const getProblem = useSelector((state) => state.getProblem);
-  const { problem, loading, error,success } = getProblem;
+  const { problem, loading, error, success } = getProblem;
 
   const createQuill = () => {
     const div = document.getElementById("problem-description-view");
@@ -30,8 +31,8 @@ const ProblemDescription = ({ match, history }) => {
 
     q.on("text-change", (delta, oldDelta, source) => {});
     q.setText("description");
-    setQuill(q)
-    return q
+    setQuill(q);
+    return q;
   };
 
   const getData = () => {
@@ -40,32 +41,40 @@ const ProblemDescription = ({ match, history }) => {
 
   useEffect(() => {
     getData();
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(()=>{
-    if(success){
-      const q = createQuill()
-      q.setContents(problem.description)
-      q.disable()
+  useEffect(() => {
+    if (success) {
+      const q = createQuill();
+      q.setContents(problem.description);
+      q.disable();
     }
-  },[success,problem])
+  }, [success, problem]);
   return (
     <>
-      {loading ? <div></div> : (
+      {loading ? (
+        <div></div>
+      ) : (
         <>
+          <Grid container>
+            <Grid item>
+              <ButtonGroup>
+                <Button variant="contained" >Description</Button>
+                <Button variant="contained" >Solution</Button>
+                <Button variant="contained" >Discuss</Button>
+                <Button variant="contained" >Submissions</Button>
+              </ButtonGroup>
+            </Grid>
+          </Grid>
           <div style={{ width: "100%", padding: "1rem" }}>
             {problem ? problem.title : ""}
           </div>
-          <div
-            id="problem-description-view"
-            style={{ width: "100%" }}
-          ></div>
+          <div id="problem-description-view" style={{ width: "100%" }}></div>
           <div style={{ padding: "1rem" }}>show contributors</div>
         </>
       )}
-      
     </>
   );
 };

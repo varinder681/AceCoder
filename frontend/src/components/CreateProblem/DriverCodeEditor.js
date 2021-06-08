@@ -30,7 +30,7 @@ const DriverCodeEditor = ({mode="java",language="java",setDriverCode}) => {
         setValue(javaDefault);
         setDriverCode(javaDefault);
     }
-  }, [language, javaDefault]);
+  }, [language, javaDefault,setDriverCode]);
 
 
   const handleEditorValueChange = (value) => {

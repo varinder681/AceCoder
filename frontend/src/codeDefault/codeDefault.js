@@ -1,4 +1,5 @@
-export const java = `class Solution {
+export const java = `import java.util.*;
+class Solution {
     public static void main(String[] args) {
       //Write your code here
     }

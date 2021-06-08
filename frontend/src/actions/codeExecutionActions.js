@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const getOutput = async (source, lang='java',input,problem) => {
+export const getOutput = async (source, lang='java',input,problem,isCreatingProblem) => {
     const program = {
         script : source,
         language: lang,
@@ -14,6 +14,12 @@ export const getOutput = async (source, lang='java',input,problem) => {
     }
 // console.log(program);
     try {
+        
+        if(isCreatingProblem){
+            const {data} = await axios.post(`/code/execute`,program,config);
+            return data;
+        }
+
         const {data} = await axios.post(`/code/execute/${problem._id}`, program, config);
         return data
     } catch (error) {

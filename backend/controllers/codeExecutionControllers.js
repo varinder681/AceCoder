@@ -3,6 +3,39 @@ import Problem from '../models/problemModel.js';
 
 const execute = async (req, res) => {
     const {script, language,stdin} = req.body
+
+    const program = {
+        "script" : script,
+        "stdin" : stdin,
+        "language" : language,
+        "versionIndex": "0",
+        "clientId": `${process.env.CLIENT_ID}`,
+        "clientSecret":`${process.env.CLIENT_SECRET}`
+    }
+    
+    // to depict a single test case
+    program.stdin = `1\n${program.stdin}`;
+
+    const config = {
+        headers: {
+          "Content-Type": "application/json"
+        },
+      };
+
+    try {
+        // console.log(program);
+        const {data} = await axios.post('https://api.jdoodle.com/v1/execute',program , config)
+        res.json(data);
+        // res.json({output : "Hold On for a sec"})
+    } catch (error) {
+        console.log('error :')
+        console.log(error);
+        res.send(error);
+    }
+}
+
+const customInputEvaluate = async (req, res) => {
+    const {script, language,stdin} = req.body
     const problemId = req.params.problemId;
 
     const program = {
@@ -47,4 +80,4 @@ const execute = async (req, res) => {
     }
 }
 
-export {execute}
+export {customInputEvaluate,execute}
