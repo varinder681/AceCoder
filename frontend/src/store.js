@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {userRegisterReducer,userLoginReducer} from './reducers/userReducer'
 import {createProblemReducer,problemSubmitReducer} from './reducers/createProblemReducer'
 import {getProblemReducer, getProblemsAllReducer} from './reducers/problemReducer'
+import {customInputEvaluateReducer,submissionEvaluateReducer} from './reducers/codeExecutionReducer'
 
 const reducer = combineReducers({
     userRegister : userRegisterReducer,
@@ -12,7 +13,9 @@ const reducer = combineReducers({
     createProblem : createProblemReducer,
     problemSubmit : problemSubmitReducer,
     getProblem : getProblemReducer,
-    getProblemsAll : getProblemsAllReducer
+    getProblemsAll : getProblemsAllReducer,
+    customInputEvaluate : customInputEvaluateReducer,
+    submissionEvaluate : submissionEvaluateReducer
 })
 
 

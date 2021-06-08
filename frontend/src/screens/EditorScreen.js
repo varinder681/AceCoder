@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, useMediaQuery, useTheme } from "@material-ui/core";
 import useStyles from "./EditorScreenStyles";
 import AceEditor from "react-ace";
@@ -11,7 +12,7 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-textmate";
 
-import { getOutput } from "../actions/codeExecutionActions";
+import { customInputOutput,submissionOutput } from "../actions/codeExecutionActions";
 import { java, cpp, python3 } from "../codeDefault/codeDefault";
 import { Button } from "@material-ui/core";
 import {
@@ -19,7 +20,7 @@ import {
   DoneAll as DoneAllIcon,
   ArrowDropDown,
   ExpandLess as ExpandLessIcon,
-  Save as SaveIcon
+  Save as SaveIcon,
 } from "@material-ui/icons";
 
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
@@ -38,11 +39,12 @@ const EditorScreen = ({
   driverCode = "",
   problem,
   setDriverCodeLanguage,
-  isCreatingProblem=false,
+  isCreatingProblem = false,
   saveDefaultTemplateHandler,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
   const isMobileWidth = useMediaQuery(theme.breakpoints.down("xs"));
   const [javaDefault, setJavaDefault] = useState(java);
 
@@ -63,6 +65,12 @@ const EditorScreen = ({
   const [mode, setMode] = useState("java");
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const customInputEvaluate = useSelector(state => state.customInputEvaluate);
+  const {loading : customInputEvaluateLoading, error : customInputEvaluateError, output : customInputEvaluateOutput} = customInputEvaluate;
+
+  const submissionEvaluate = useSelector(state => state.submissionEvaluate);
+  const {loading : submissionEvaluateLoading, error : submissionEvaluateError, output : submissionEvaluateOutput} = submissionEvaluate;
+
   const getSelectedLanguageName = () => {
     switch (language) {
       case "cpp":
@@ -80,7 +88,7 @@ const EditorScreen = ({
         for (let i = 0; i < problem.defaultTemplate.length; i++) {
           if (language === problem.defaultTemplate[i].language) {
             setValue(problem.defaultTemplate[i].code);
-            setJavaDefault(problem.defaultTemplate[i].code)
+            setJavaDefault(problem.defaultTemplate[i].code);
             break;
           }
         }
@@ -90,8 +98,8 @@ const EditorScreen = ({
     } else if (language === "python3") {
       setValue(python3Default);
     }
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLanguageChange = (lang) => {
@@ -112,7 +120,6 @@ const EditorScreen = ({
   };
 
   const handleEditorValueChange = (newValue) => {
-
     setValue(newValue);
     if (language === "java") {
       setJavaDefault(newValue);
@@ -123,29 +130,38 @@ const EditorScreen = ({
     }
   };
 
-  const handleCompile = async () => {
+  const handleCompile = () => {
     if (input !== "") {
       setIsCompiling(true);
-      // console.log(language);
-      const data = await getOutput( isCreatingProblem ? `${value}\n${driverCode}` : value , language, input, problem, isCreatingProblem);
-      
-      setIsCompiling(false);
+      setIsSubmitting(false);
+      dispatch(
+        customInputOutput(
+          isCreatingProblem ? `${value}\n${driverCode}` : value,
+          language,
+          input,
+          problem,
+          isCreatingProblem
+        )
+      );
+      setOutput(true);
       setShowConsole(true);
       setShowResult(true);
-      setShowTestcase(false);
-      setOutput(data.output);
+      setShowTestcase(false)
     }
   };
 
-  const handleSubmiting = async () => {
-    setIsSubmitting(true);
-    // console.log(language);
-    // console.log(value);
-    setTimeout(() => {
-      setIsSubmitting(false);
-    }, 2000);
-
-    // setOutput(data.output);
+  const handleSubmission = () => {
+      setIsSubmitting(true);
+      setIsCompiling(false);
+      dispatch(
+        submissionOutput(
+          isCreatingProblem ? `${value}\n${driverCode}` : value,
+          language,
+          input,
+          problem,
+          isCreatingProblem
+        )
+      );    
   };
 
   const handleMenuClick = (e) => {
@@ -169,16 +185,16 @@ const EditorScreen = ({
             variant="contained"
             color="primary"
             onClick={handleCompile}
-            disabled={isCompiling || isSubmitting}
+            disabled={customInputEvaluateLoading || submissionEvaluateLoading}
             style={{
               outline: "none",
               minWidth: "100px",
               marginTop: "1rem",
               minHeight: "24px",
             }}
-            startIcon={isCompiling ? null : <CodeIcon />}
+            startIcon={customInputEvaluateLoading || submissionEvaluateLoading ? null : <CodeIcon />}
           >
-            {isCompiling ? <CircularProgress size="1.5rem" /> : "Compile"}
+            {customInputEvaluateLoading || submissionEvaluateLoading ? <CircularProgress size="1.5rem" /> : "Compile"}
           </Button>
         </Grid>
       </Grid>
@@ -187,6 +203,8 @@ const EditorScreen = ({
 
   const resultPanel = (
     <>
+    {customInputEvaluateLoading && <Grid container justify="center"><CircularProgress size="2rem" /></Grid>}
+    {!customInputEvaluateLoading && isCompiling &&
       <Grid justify="space-around" container item style={{ padding: "1em" }}>
         <Grid container justify="flex-start" alignItems="center" item xs={3}>
           Your input
@@ -206,7 +224,8 @@ const EditorScreen = ({
           <pre>{input}</pre>
         </Grid>
       </Grid>
-      {output && (
+      }
+      {!customInputEvaluateLoading && isCompiling && output && !customInputEvaluateError && (
         <Grid justify="space-around" container item style={{ padding: "1em" }}>
           <Grid item container xs={3} justify="flex-start" alignItems="center">
             Output
@@ -223,7 +242,7 @@ const EditorScreen = ({
               backgroundColor: "rgb(250, 250, 250)",
             }}
           >
-            <pre>{output}</pre>
+            <pre>{customInputEvaluateOutput.output}</pre>
           </Grid>
         </Grid>
       )}
@@ -283,7 +302,7 @@ const EditorScreen = ({
           style={{
             height: "100%",
             borderRadius: 0,
-            borderBottom : 'transparent'
+            borderBottom: "transparent",
           }}
         >
           {getSelectedLanguageName()}
@@ -296,7 +315,7 @@ const EditorScreen = ({
             style={{
               height: "100%",
               borderRadius: 0,
-              borderBottom : 'transparent'
+              borderBottom: "transparent",
             }}
             onClick={() => {
               saveDefaultTemplateHandler(value);
@@ -375,7 +394,7 @@ const EditorScreen = ({
               variant="contained"
               color="primary"
               onClick={handleCompile}
-              disabled={isCompiling || isSubmitting}
+              disabled={customInputEvaluateLoading || submissionEvaluateLoading}
               className={classes.buttonsBottom}
               style={{
                 outline: "none",
@@ -384,21 +403,21 @@ const EditorScreen = ({
                 marginLeft: "auto",
                 minHeigth: "24px",
               }}
-              startIcon={isCompiling ? null : <CodeIcon />}
+              startIcon={customInputEvaluateLoading || submissionEvaluateLoading ? null : <CodeIcon />}
             >
-              {isCompiling ? <CircularProgress size="1.5rem" /> : "Compile"}
+              {customInputEvaluateLoading || submissionEvaluateLoading ? <CircularProgress size="1.5rem" /> : "Compile"}
             </Button>
           </Grid>
           <Grid item>
             <Button
               variant="contained"
               color="secondary"
-              onClick={handleSubmiting}
+              onClick={handleSubmission}
               className={[classes.submit, classes.buttonsBottom].join(" ")}
-              disabled={isSubmitting || isCompiling}
-              startIcon={isSubmitting ? null : <DoneAllIcon />}
+              disabled={customInputEvaluateLoading || submissionEvaluateLoading}
+              startIcon={customInputEvaluateLoading || submissionEvaluateLoading ? null : <DoneAllIcon />}
             >
-              {isSubmitting ? <CircularProgress size="1rem" /> : "Submit"}
+              {customInputEvaluateLoading || submissionEvaluateLoading ? <CircularProgress size="1rem" /> : "Submit"}
             </Button>
           </Grid>
         </Grid>

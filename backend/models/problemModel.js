@@ -28,13 +28,14 @@ const problemSchema = mongoose.Schema({
         type : Object,
         required : true
     },
-    testcase : [
+    testcases : [
         {
             input : {
                 type : String,
                 required : true,
                 default : ''
-            }        }
+            }        
+        }
     ],
     defaultTemplate : [
         {
