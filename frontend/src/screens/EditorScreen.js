@@ -283,7 +283,8 @@ const EditorScreen = ({
             </> :
             <>
               <pre>
-                {submissionEvaluateOutput.output}
+                Wrong Solution
+                Unable to clear all testcases
               </pre>
             </>
           }

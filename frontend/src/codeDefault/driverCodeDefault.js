@@ -51,6 +51,7 @@ public class Main {
         int[] userResult = sol.plusOne(nums2);
         
         int status = expectedResult.length != userResult.length ? 0 : 1;
+        System.out.println();
         System.out.println("Your Output :");
         for(int i=0; i<userResult.length; i++){
             System.out.print(userResult[i]+" ");
