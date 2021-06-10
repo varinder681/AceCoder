@@ -28,7 +28,11 @@ export const customInputOutput = (source, lang='java',input,problem,isCreatingPr
         })
         if(isCreatingProblem){
             const {data} = await axios.post(`/code/execute`,program,config);
-            return data;
+            dispatch({
+                type : PROBLEM_CUSTOM_INPUT_EVALUATE_SUCCESS,
+                payload : data
+            })
+            return
         }
 
         const {data} = await axios.post(`/code/execute/${problem._id}`, program, config);
@@ -74,7 +78,7 @@ export const submissionOutput = (source, lang='java',input,problem,isCreatingPro
             type : PROBLEM_SUBMISSION_EVALUATE_SUCCESS,
             payload : data
         })
-
+        return
     } catch (error) {
         dispatch({
             type : PROBLEM_SUBMISSION_EVALUATE_FAIL,

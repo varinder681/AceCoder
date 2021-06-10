@@ -8,7 +8,8 @@ import {
     PROBLEM_SUBMIT_REQUEST,
     PROBLEM_SUBMIT_SUCCESS,
     PROBLEM_DEFAULT_TEMPLATE_CHANGE,
-    PROBLEM_SOLUTION_CHANGE
+    PROBLEM_SOLUTION_CHANGE,
+    PROBLEM_TESTCASES_ADD_ONE
 } from '../constants/createProblemConstants'
 
 export const handleTitleChange = (title) => async dispatch => {
@@ -50,6 +51,12 @@ export const solutionChange = (language,code) => async dispatch => {
     dispatch({
         type : PROBLEM_SOLUTION_CHANGE,
         payload : {language,code}
+    })
+}
+export const testcasesAddOne = (input) => async dispatch => {
+    dispatch({
+        type : PROBLEM_TESTCASES_ADD_ONE,
+        payload : {input : input}
     })
 }
 

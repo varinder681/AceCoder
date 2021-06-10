@@ -7,7 +7,8 @@ import {
     PROBLEM_SUBMIT_REQUEST,
     PROBLEM_SUBMIT_SUCCESS,
     PROBLEM_DEFAULT_TEMPLATE_CHANGE,
-    PROBLEM_SOLUTION_CHANGE
+    PROBLEM_SOLUTION_CHANGE,
+    PROBLEM_TESTCASES_ADD_ONE
 } from '../constants/createProblemConstants'
 
 const initialState = {
@@ -17,7 +18,8 @@ const initialState = {
     title : localStorage.getItem('problem-title') ? JSON.parse(localStorage.getItem('problem-title')) : '',
     searchTitle : localStorage.getItem('problem-search-title') ? JSON.parse(localStorage.getItem('problem-search-title')) : '',
     defaultTemplate : [],
-    solution : []
+    solution : [],
+    testcases : []
 }
 
 export const createProblemReducer = (state=initialState,action) => {
@@ -77,6 +79,16 @@ export const createProblemReducer = (state=initialState,action) => {
             return {
                 ...state,
                 solution : newSolution
+            }
+        case PROBLEM_TESTCASES_ADD_ONE:
+            const newTestcases = state.testcases.filter( testcase => {
+                return testcase.input !== payload.input
+            })
+            newTestcases.push(payload);
+            
+            return {
+                ...state,
+                testcases : newTestcases
             }
         default:
             return state;

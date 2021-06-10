@@ -1,104 +1,133 @@
-export const java = `class Solution2 {
+export const java = `class ExpectedSolution {
 
-    public int[] plusOne(int[] digits) {
-      for (int i = digits.length - 1; i >= 0; i--) {
-        if (digits[i] < 9) {
-          digits[i]++;
-          return digits;
-        }
-        digits[i] = 0;
+  public int[] plusOne(int[] digits) {
+    for (int i = digits.length - 1; i >= 0; i--) {
+      if (digits[i] < 9) {
+        digits[i]++;
+        return digits;
       }
-      int res[] = new int[digits.length + 1];
-      res[0] = 1;
-      return res;
+      digits[i] = 0;
     }
+    int res[] = new int[digits.length + 1];
+    res[0] = 1;
+    return res;
   }
-  
-  public class Main {
-  
+}
+
+
+// Creating Solution for problem ->  Plus One
+
+public class Main {
     static Scanner sc = new Scanner(System.in);
-    static ArrayList<ArrayList<int[]>> expected = null;
-    static ArrayList<ArrayList<int[]>> userResults = null;
-    static ArrayList<ArrayList<Boolean>> resultsBoolean = new ArrayList<>();
-  
+    static boolean isWrong = false;
     public static void main(String[] args) {
-      expected = new ArrayList<>();
-      userResults = new ArrayList<>();
-      int t = sc.nextInt();
-      int count = 1;
-      while (count <= t) {
-        ArrayList<Boolean> arr = takeInput(count, new ArrayList<Boolean>());
-        count++;
-        resultsBoolean.add(arr);
-      }
-      boolean flag = true;
-      for (int i = 0; i < resultsBoolean.size() && flag; i++) {
-        ArrayList<Boolean> results = resultsBoolean.get(i);
-        for (int j = 0; j < results.size() && flag; j++) {
-          Boolean result = results.get(j);
-          if (result == false) {
-            
-            flag = false;
-          }
+        // Case Type
+        // 1 implies case for custom input
+        // 2 implies case for submission of problem
+        int caseType = 0;
+        caseType = sc.nextInt();
+        if(caseType==1){
+            takeInputForCustomEvaluation();
         }
-      }
-      if (flag) System.out.println(
-        "Status : " + "Accepted"
-      ); else System.out.println("Status : " + "Wrong Answer");
-    }
-  
-    public static void printResult(int[] res) {
-      System.out.print("[ ");
-      for (int k = 0; k < res.length; k++) {
-        System.out.print(res[k] + " ");
-      }
-      System.out.println("]");
-    }
-  
-    public static ArrayList<Boolean> takeInput(int t, ArrayList<Boolean> res) {
-      ArrayList<int[]> expected_result = new ArrayList<>();
-      ArrayList<int[]> user_result = new ArrayList<>();
-      int n = sc.nextInt();
-      int count = 1;
-      while (count <= n) {
-        int size = sc.nextInt();
-        int[] nums1 = new int[size];
-        int[] nums2 = new int[size];
-        for (int i = 0; i < size; i++) {
-          nums1[i] = nums2[i] = sc.nextInt();
+        else if(caseType == 2){
+            submissionEvaluation();
         }
-        Solution2 sol1 = new Solution2();
-        Solution sol2 = new Solution();
-        int[] res1 = sol1.plusOne(nums1);
-        expected_result.add(res1);
-        int[] res2 = sol2.plusOne(nums2);
-        user_result.add(res2);
-        res.add(validate(res1, res2));
+    }
+    public static void takeInputForCustomEvaluation(){
+        // take input for no. of elements
+        // Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] nums1 = new int[n];
+        int[] nums2 = new int[n];
+        
+        for(int i=0; i<n; i++){
+            nums1[i] = sc.nextInt();
+            nums2[i] = nums1[i];
+        }
+        ExpectedSolution exp_sol = new ExpectedSolution();
+        Solution sol = new Solution();
+        
+        int[] expectedResult = exp_sol.plusOne(nums1);
+        int[] userResult = sol.plusOne(nums2);
+        
+        int status = expectedResult.length != userResult.length ? 0 : 1;
         System.out.println("Your Output :");
-        output(res2);
+        for(int i=0; i<userResult.length; i++){
+            System.out.print(userResult[i]+" ");
+        }
         System.out.println();
-        System.out.println("Expected Output : ");
-        output(res1);
+        System.out.println("Expected Output :");
+        for(int i=0; i<expectedResult.length; i++){
+            System.out.print(expectedResult[i]+" ");
+            if(i<userResult.length && userResult[i]!=expectedResult[i]){
+                status = 0;
+            }
+        }
         System.out.println();
-        count++;
-      }
-      expected.add(expected_result);
-      userResults.add(user_result);
-      return res;
+        System.out.println("Status : "+(status==1 ? "Accepted" : "Wrong Answer!"));
+        
     }
-  
-    public static void output(int[] nums) {
-      for (int num : nums) System.out.print(num + " ");
-      System.out.println();
+    public static void submissionEvaluation(){
+        // take input for the no. of testcases
+        int t = sc.nextInt();
+        
+        while(t-- > 0 && !isWrong){
+            // take input for no. of elements
+
+            int n = sc.nextInt();
+            int[] input = new int[n];
+            int[] nums1 = new int[n];
+            int[] nums2 = new int[n];
+
+            for(int i=0; i<n; i++){
+                input[i] = sc.nextInt();
+                nums1[i] = input[i];
+                nums2[i] = nums1[i];
+            }
+            ExpectedSolution exp_sol = new ExpectedSolution();
+            Solution sol = new Solution();
+
+            int[] expectedResult = exp_sol.plusOne(nums1);
+            int[] userResult = sol.plusOne(nums2);
+            validate(expectedResult,userResult);
+            if(isWrong){
+                System.out.println("First Testcase where your code fails :");
+                System.out.println();
+                
+                System.out.println("Testcase Input :");
+                System.out.println(n);
+                for(int i=0; i<input.length; i++){
+                    System.out.print(input[i]+" ");
+                }
+                System.out.println();
+                System.out.println();
+                
+                System.out.println("Your Output :");
+                for(int i=0; i<userResult.length; i++){
+                    System.out.print(userResult[i]+" ");
+                }
+                System.out.println();
+                
+                System.out.println("Expected Output : ");
+                for(int i=0; i<expectedResult.length; i++){
+                    System.out.print(expectedResult[i]+" ");
+                }
+            }
+        }
+        if(!isWrong){
+            System.out.print("{true}");
+        }
     }
-  
-    public static Boolean validate(int[] res1, int[] res2) {
-      if (res1.length != res2.length) {
-        return false;
-      }
-      for (int i = 0; i < res1.length; i++) {
-        if (res1[i] != res2[i]) return false;
-      }
-      return true;
+    public static void validate(int[] expectedResult,int[] userResult){
+        if(expectedResult.length!=userResult.length){
+            isWrong = true;
+            return;
+        }
+        for(int i=0; i<userResult.length; i++){
+            if(userResult[i]!=expectedResult[i]){
+                isWrong = true;
+                break;
+            }
+        }
     }
-  }`;
+}`;

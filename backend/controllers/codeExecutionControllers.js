@@ -23,7 +23,7 @@ const execute = async (req, res) => {
       };
 
     try {
-        // console.log(program);
+        // console.log(program.stdin);
         const {data} = await axios.post('https://api.jdoodle.com/v1/execute',program , config)
         res.json(data);
         // res.json({output : "Hold On for a sec"})
@@ -70,10 +70,10 @@ const customInputEvaluate = async (req, res) => {
       };
 
     try {
-        console.log(program.stdin);
-        // const {data} = await axios.post('https://api.jdoodle.com/v1/execute',program , config)
-        // res.json(data);
-        res.json({output : program.stdin})
+        // console.log(program.stdin);
+        const {data} = await axios.post('https://api.jdoodle.com/v1/execute',program , config)
+        res.json(data);
+        // res.json({output : program.stdin})
     } catch (error) {
         console.log('error :')
         console.log(error);
@@ -107,9 +107,9 @@ const submissionEvaluate = async (req, res) => {
         // 2 implies it's a submission for the driver code of the problem
         const caseSubmission = 2;
         
-        let input = `${caseSubmission} ${problem.testcases.length}`;
+        let input = `${caseSubmission}\n${problem.testcases.length}`;
         for(let i=0; i<problem.testcases.length; i++){
-            input = `${input} ${problem.testcases[i].input}`;
+            input = `${input}\n${problem.testcases[i].input}`;
         }
         program.stdin = input;
         

@@ -13,14 +13,17 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-textmate";
 
 import { customInputOutput,submissionOutput } from "../actions/codeExecutionActions";
+import {testcasesAddOne} from '../actions/createProblemActions'
 import { java, cpp, python3 } from "../codeDefault/codeDefault";
 import { Button } from "@material-ui/core";
 import {
   Code as CodeIcon,
+  Add as AddIcon,
   DoneAll as DoneAllIcon,
   ArrowDropDown,
   ExpandLess as ExpandLessIcon,
   Save as SaveIcon,
+  CheckCircle as CheckCircleIcon
 } from "@material-ui/icons";
 
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
@@ -70,7 +73,7 @@ const EditorScreen = ({
 
   const submissionEvaluate = useSelector(state => state.submissionEvaluate);
   const {loading : submissionEvaluateLoading, error : submissionEvaluateError, output : submissionEvaluateOutput} = submissionEvaluate;
-
+  
   const getSelectedLanguageName = () => {
     switch (language) {
       case "cpp":
@@ -162,6 +165,10 @@ const EditorScreen = ({
           isCreatingProblem
         )
       );    
+      setOutput(true);
+      setShowConsole(true);
+      setShowResult(true);
+      setShowTestcase(false)
   };
 
   const handleMenuClick = (e) => {
@@ -180,7 +187,7 @@ const EditorScreen = ({
           spellCheck="false"
           style={{ height: "50%", width: "80%", resize: "none" }}
         ></textarea>
-        <Grid item>
+        <Grid container justify="center" item>
           <Button
             variant="contained"
             color="primary"
@@ -192,18 +199,38 @@ const EditorScreen = ({
               marginTop: "1rem",
               minHeight: "24px",
             }}
-            startIcon={customInputEvaluateLoading || submissionEvaluateLoading ? null : <CodeIcon />}
+            startIcon={customInputEvaluateLoading || submissionEvaluateLoading ? null : <CodeIcon/>}
           >
             {customInputEvaluateLoading || submissionEvaluateLoading ? <CircularProgress size="1.5rem" /> : "Compile"}
           </Button>
+          {isCreatingProblem && <Button
+            variant="outlined"
+            color="primary"
+            onClick={()=>{
+              if(input!=="")
+                dispatch(testcasesAddOne(input))
+            }}
+            disabled={customInputEvaluateLoading || submissionEvaluateLoading}
+            style={{
+              outline: "none",
+              minWidth: "100px",
+              marginTop: "1rem",
+              marginLeft : '1rem',
+              minHeight: "24px",
+            }}
+            startIcon={<AddIcon />}
+          >
+            Add testcases
+          </Button>}
         </Grid>
+        
       </Grid>
     </>
   );
 
   const resultPanel = (
     <>
-    {customInputEvaluateLoading && <Grid container justify="center"><CircularProgress size="2rem" /></Grid>}
+    {customInputEvaluateLoading && isCompiling && <Grid container justify="center"><CircularProgress size="2rem" /></Grid>}
     {!customInputEvaluateLoading && isCompiling &&
       <Grid justify="space-around" container item style={{ padding: "1em" }}>
         <Grid container justify="flex-start" alignItems="center" item xs={3}>
@@ -246,6 +273,22 @@ const EditorScreen = ({
           </Grid>
         </Grid>
       )}
+      {submissionEvaluateLoading && isSubmitting && <Grid container justify="center"><CircularProgress size="2rem" /></Grid>}
+      {!submissionEvaluateLoading && isSubmitting &&
+        <Grid>
+          {submissionEvaluateOutput.output === "{true}" ? 
+            <>
+              <CheckCircleIcon style={{color : 'green'}} />
+              <p>All testcases passed</p>
+            </> :
+            <>
+              <pre>
+                {submissionEvaluateOutput.output}
+              </pre>
+            </>
+          }
+        </Grid>
+      }
     </>
   );
 
@@ -403,9 +446,9 @@ const EditorScreen = ({
                 marginLeft: "auto",
                 minHeigth: "24px",
               }}
-              startIcon={customInputEvaluateLoading || submissionEvaluateLoading ? null : <CodeIcon />}
+              startIcon={customInputEvaluateLoading || submissionEvaluateLoading ? null : <CodeIcon/>}
             >
-              {customInputEvaluateLoading || submissionEvaluateLoading ? <CircularProgress size="1.5rem" /> : "Compile"}
+              {customInputEvaluateLoading ? <CircularProgress size="1.5rem" /> : "Compile"}
             </Button>
           </Grid>
           <Grid item>
@@ -417,7 +460,7 @@ const EditorScreen = ({
               disabled={customInputEvaluateLoading || submissionEvaluateLoading}
               startIcon={customInputEvaluateLoading || submissionEvaluateLoading ? null : <DoneAllIcon />}
             >
-              {customInputEvaluateLoading || submissionEvaluateLoading ? <CircularProgress size="1rem" /> : "Submit"}
+              {submissionEvaluateLoading ? <CircularProgress size="1.5rem" /> : "Submit"}
             </Button>
           </Grid>
         </Grid>

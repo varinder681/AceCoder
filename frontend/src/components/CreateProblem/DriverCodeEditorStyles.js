@@ -3,7 +3,7 @@ import {makeStyles} from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     container : {
       width: "100%",
-      height : '100%',
+      height : '84%',
       position: "relative",
       backgroundColor : 'white',
     },
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
       position: "relative",
     },
     editor: {
-      height: "84%",
+      height: "100%",
       width: "100%",
     },
     footer: {

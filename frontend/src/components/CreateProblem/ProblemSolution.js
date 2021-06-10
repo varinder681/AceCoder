@@ -33,7 +33,7 @@ const ProblemSolution = () => {
 
   return (
     <>
-      <Grid container item className={classes.container}>
+      <Grid container justify="flex-start" item className={classes.container}>
         <Grid container item xs={6} >
           <Grid
             container
@@ -57,6 +57,9 @@ const ProblemSolution = () => {
             </Button>
           </Grid>
           <DriverCodeEditor setDriverCode={setDriverCode} />
+          <Grid container style={{height : '10%'}}>
+
+          </Grid>
         </Grid>
         <Grid container item xs={6}>
           <EditorScreen

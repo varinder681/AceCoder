@@ -20,18 +20,20 @@ export const submit = async (req, res) => {
                     editorial : (problem.editorial),
                     difficulty : problem.difficulty,
                     solution : problem.solution,
-                    defaultTemplate : problem.defaultTemplate
+                    defaultTemplate : problem.defaultTemplate,
+                    testcases : problem.testcases
                 })
                 if(newProblem){
                     res.status(200)
                     res.json({
                         _id : newProblem._id,
                         title : newProblem.title,
-                        searchTitle : problem.searchTitle,
+                        searchTitle : newProblem.searchTitle,
                         description : newProblem.description,
                         difficulty : newProblem.difficulty,
-                        solution : problem.solution,
-                        defaultTemplate : problem.defaultTemplate
+                        solution : newProblem.solution,
+                        defaultTemplate : newProblem.defaultTemplate,
+                        testcases : newProblem.testcases
                     })
                 }                
             } catch (error) {
