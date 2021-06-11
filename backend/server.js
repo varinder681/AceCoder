@@ -7,7 +7,7 @@ import codeExecutionRoutes from './routes/codeExecutionRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import createProblemRoutes from './routes/createProblemRoutes.js'
 import problemRoutes from './routes/problemsRoutes.js'
-
+import discussionsRoutes from './routes/discussionsRoutes.js'
 dotenv.config();
 
 dbConnect();
@@ -23,6 +23,7 @@ app.use('/code',codeExecutionRoutes)
 app.use('/user',userRoutes)
 app.use('/create-problem',createProblemRoutes)
 app.use('/problems',problemRoutes)
+app.use('/discussions',discussionsRoutes)
 
 const __dirname = path.resolve();
 

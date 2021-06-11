@@ -6,6 +6,7 @@ import {userRegisterReducer,userLoginReducer} from './reducers/userReducer'
 import {createProblemReducer,problemSubmitReducer} from './reducers/createProblemReducer'
 import {getProblemReducer, getProblemsAllReducer} from './reducers/problemReducer'
 import {customInputEvaluateReducer,submissionEvaluateReducer} from './reducers/codeExecutionReducer'
+import {discussionSubmitReducer,discussionsGetAllReducer} from './reducers/discussionsForumReducer'
 
 const reducer = combineReducers({
     userRegister : userRegisterReducer,
@@ -15,7 +16,9 @@ const reducer = combineReducers({
     getProblem : getProblemReducer,
     getProblemsAll : getProblemsAllReducer,
     customInputEvaluate : customInputEvaluateReducer,
-    submissionEvaluate : submissionEvaluateReducer
+    submissionEvaluate : submissionEvaluateReducer,
+    discussionSubmit : discussionSubmitReducer,
+    discussionsGetAll : discussionsGetAllReducer
 })
 
 

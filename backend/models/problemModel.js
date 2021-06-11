@@ -1,11 +1,6 @@
 import mongoose from 'mongoose'
 
 const problemSchema = mongoose.Schema({
-    pid: {
-        type : Number,
-        required : true,
-        unique : true
-    },
     title : {
         type : String,
         required : true,
@@ -62,6 +57,28 @@ const problemSchema = mongoose.Schema({
                 required : true,
                 default : ''
             }
+        }
+    ],
+    discussions : [
+        {
+            userId : {
+                type : mongoose.Schema.Types.ObjectId,
+                required : true,
+                ref : "User"
+            },
+            title : {
+                type : String,
+                required : true,
+            },
+            text : {
+                type : Object,
+                required : true
+            },
+            views : {
+                type : Number
+            },
+            likes : [],
+            comments : [],
         }
     ]
 })

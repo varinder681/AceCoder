@@ -67,11 +67,19 @@ export const submitProblem = (problem) => async dispatch => {
     
     try {
         // const data = JSON.stringify(problem)
-        const {data} = await axios.post('/create-problem/submit',{problem : JSON.stringify(problem)})
-        dispatch({
-            type : PROBLEM_SUBMIT_SUCCESS,
-            payload : data
-        })
+        if(problem.testcases.length > 0) {
+            const {data} = await axios.post('/create-problem/submit',{problem : JSON.stringify(problem)})
+            dispatch({
+                type : PROBLEM_SUBMIT_SUCCESS,
+                payload : data
+            })
+        }else{
+            dispatch({
+                type : PROBLEM_SUBMIT_FAIL,
+                payload : "testcases not defined"
+            })    
+        }
+
     } catch (error) {
         dispatch({
             type : PROBLEM_SUBMIT_FAIL,

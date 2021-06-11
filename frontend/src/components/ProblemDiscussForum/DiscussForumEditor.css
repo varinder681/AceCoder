@@ -1,0 +1,8 @@
+#discuss-forum .ql-container {
+    height :auto;
+}
+
+#discuss-forum .ql-editor {
+    min-height : 100px;
+    max-height :50vh;
+}

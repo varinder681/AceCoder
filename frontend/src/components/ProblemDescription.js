@@ -6,6 +6,8 @@ import hljs from 'highlight.js'
 import { useDispatch, useSelector } from "react-redux";
 import { getProblemBySearchTitle } from "../actions/problemsActions";
 
+import ProblemDiscussForum from './ProblemDiscussForum/ProblemDiscussForum';
+
 import "quill/dist/quill.snow.css";
 import 'highlight.js/styles/github-gist.css'
 
@@ -40,7 +42,7 @@ const ProblemDescription = ({ match, history }) => {
   };
 
   const createQuillEditorial = () => {
-    const div = document.getElementById("problem-editorial");
+    const div = document.getElementById("problem-editorial-view");
     if (div) {
       div.innerHTML = null;
       const editor = document.createElement("div");
@@ -117,10 +119,10 @@ const ProblemDescription = ({ match, history }) => {
               {problem ? problem.title : ""}
             </div>
             <div id="problem-description-view" style={{ width: "100%", display: view==="description" ? "block" : "none" }}></div>
-            <div id="problem-editorial" style={{ width: "100%", display: view==="editorial" ? "block" : "none" }}></div>
-            <div id="problem-editorial" style={{ width: "100%", display: view==="discuss" ? "block" : "none" }}>Discuss feature will be added soon...</div>
-            <div id="problem-editorial" style={{ width: "100%", display: view==="submissions" ? "block" : "none" }}>Submissions feature will be added soon</div>
-            <div style={{ padding: "1rem" }}>show contributors</div>
+            <div id="problem-editorial-view" style={{ width: "100%", display: view==="editorial" ? "block" : "none" }}></div>
+            {view === "discuss" && <ProblemDiscussForum />}
+            <div style={{ width: "100%", display: view==="submissions" ? "block" : "none" }}>Submissions feature will be added soon</div>
+            {view==="description" && <div style={{ padding: "1rem" }}>show contributors</div> }
           </Grid>
         </Grid>
       )}

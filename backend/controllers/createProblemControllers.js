@@ -5,7 +5,7 @@ export const submit = async (req, res) => {
     const exists = await Problem.find({title : problem.title}).countDocuments()
     
     try {
-        const pid = await Problem.countDocuments()
+        
         if(exists > 0) {
         res.status(400)
             res.json({error : "problem already exists"})
@@ -13,7 +13,7 @@ export const submit = async (req, res) => {
         else{
             try {
                 const newProblem = await Problem.create({
-                    pid : pid+1,
+
                     title : problem.title,
                     searchTitle : problem.searchTitle,
                     description : (problem.description),
