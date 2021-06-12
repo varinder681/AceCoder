@@ -1,13 +1,23 @@
-import Problem from '../models/problemModel.js';
+import DiscussionForum from '../models/discussionForumModel.js'
+import Problem from '../models/problemModel.js'
 
 export const submit = async (req, res) => {
     const problemId = req.params.problemId;
     try {
-        const problem = await Problem.findOne({_id : problemId});
-        problem.discussions.push(req.body)
-        problem.save(()=>{
-            res.json(problem)
-        })
+        const problemExists = await Problem.findOne({_id : problemId});
+        if(problemExists){
+            const newDiscussion = await DiscussionForum.create({
+                ...req.body,
+                user : req.body.userId,
+                problemId
+            })
+            if(newDiscussion){
+                res.json(newDiscussion)
+            }
+        }
+        else
+            res.json({msg : "hold on"})
+        
     } catch (error) {
         res.status(500)
         res.json(req.body)
@@ -17,10 +27,22 @@ export const submit = async (req, res) => {
 export const getAll = async (req, res) => {
     const problemId = req.params.problemId;
     try {
-        const problem = await Problem.findOne({_id : problemId});
-        res.json(problem.discussions)
+        const discussions = await DiscussionForum.find({problemId},{text : 0}).populate('user','name email')
+        res.json(discussions)
     } catch (error) {
         res.status(500)
-        res.json({error : "problem not found"})
+        res.json({error : "discussions not found"})
+    }
+}
+
+export const getOne = async (req, res) => {
+    const discussionId = req.params.discussionId;
+    
+    try {
+        const discussion = await DiscussionForum.findOne({_id : discussionId}).populate('user','name email')
+        res.json(discussion)
+    } catch (error) {
+        res.status(500)
+        res.json({error : "discussion not found"})
     }
 }

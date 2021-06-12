@@ -46,10 +46,3 @@ export const submit = async (req, res) => {
         res.json({error : 'Internal Server Error jhkj'})
     }
 }
-
-export const getProblem = async (req,res) => {
-    const {pid} = req.body
-    const problem = await Problem.findOne({pid})
-
-    res.json(problem)
-}

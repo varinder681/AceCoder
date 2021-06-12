@@ -1,4 +1,5 @@
 import React,{useState,useEffect}from "react";
+import {Link} from 'react-router-dom'
 import {useSelector,useDispatch} from 'react-redux';
 import { Button, Grid } from "@material-ui/core";
 
@@ -10,8 +11,9 @@ const ProblemDiscussForum = () => {
     const dispatch = useDispatch();
 
     const [create, setCreate] = useState(false);
+
     const problem = useSelector(state => state.getProblem.problem);
-    const {_id : problemId} = problem;
+    const {_id : problemId, searchTitle} = problem;
 
     const userInfo = useSelector(state => state.userLogin.userInfo);
 
@@ -19,7 +21,7 @@ const ProblemDiscussForum = () => {
     const {loading : discussionsLoading, discussions} = discussionsGetAll
 
     const [title , setTitle] = useState("");
-    const [text,setText] = useState(null);
+    const [text,setText] = useState({ops : []});
     
     useEffect(()=>{
       dispatch(getAllDiscussions(problemId))
@@ -34,7 +36,9 @@ const ProblemDiscussForum = () => {
     const discussionsView = discussions ? discussions.map((discussion => {
       return <Grid container>
             <Grid item xs={12} style={{padding : "1rem"}}>
-              {discussion.title}
+              <Link to={`/problem/discuss/${searchTitle}/${discussion._id}`}>
+                {discussion.title}
+              </Link>
             </Grid>
       </Grid>
     })) : null
@@ -59,7 +63,7 @@ const ProblemDiscussForum = () => {
           style={{ width: "100%", marginBottom: "1rem",padding : "0.5rem", fontSize: "1rem" }}
         />
 
-        <DiscussFormEditor id="discuss-forum" setText={setText}/>
+        <DiscussFormEditor id="discuss-forum" setText={setText} />
         <Button
           variant="outlined"
           style={{ marginLeft: "auto", marginTop: "1rem" }}

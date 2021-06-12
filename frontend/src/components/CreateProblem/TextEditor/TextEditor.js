@@ -72,9 +72,9 @@ const TextEditor = ({ id }) => {
 
     q.on("text-change", (delta, oldDelta, source) => {
       if(id==='problem-description')
-        dispatch(handleDescriptionChange(delta))
+        dispatch(handleDescriptionChange(q.getContents()))
       else if(id==='problem-editorial')
-        dispatch(handleEditorialChange(delta))
+        dispatch(handleEditorialChange(q.getContents()))
     });
     if(id==='problem-description'){
       if(description)

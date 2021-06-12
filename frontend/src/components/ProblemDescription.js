@@ -85,6 +85,7 @@ const ProblemDescription = ({ match, history }) => {
       qDescription.disable();
 
       const qEditorial = createQuillEditorial();
+      
       qEditorial.setContents(problem.editorial);
       setQuillEditorial(qEditorial);
       qEditorial.disable();

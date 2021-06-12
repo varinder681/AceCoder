@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import Quill from 'quill';
 import hljs from 'highlight.js'
 
@@ -21,7 +21,7 @@ const TOOLBAR_OPTIONS = [
   ];
 
 const DiscussForumEditor = ({id,setText}) => {
-    
+
 
     useEffect(() => {
         const div = document.getElementById(id);
@@ -44,9 +44,8 @@ const DiscussForumEditor = ({id,setText}) => {
         // readOnly : true
       });
       q.on("text-change", (delta, oldDelta, source) => {
-          setText(delta);
-        });
-      q.setText(`/*  write here */`)
+        setText(q.getContents())
+      });
 
     }, [])
     return (    

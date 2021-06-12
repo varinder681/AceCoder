@@ -59,28 +59,6 @@ const problemSchema = mongoose.Schema({
             }
         }
     ],
-    discussions : [
-        {
-            userId : {
-                type : mongoose.Schema.Types.ObjectId,
-                required : true,
-                ref : "User"
-            },
-            title : {
-                type : String,
-                required : true,
-            },
-            text : {
-                type : Object,
-                required : true
-            },
-            views : {
-                type : Number
-            },
-            likes : [],
-            comments : [],
-        }
-    ]
 })
 
 const Problem = mongoose.model('problem',problemSchema);
