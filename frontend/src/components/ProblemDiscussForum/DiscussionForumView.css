@@ -6,11 +6,6 @@
     height :auto;
 }
 
-#discussion-forum-view .ql-editor {
-    min-height : 100px;
-    max-height :50vh;
-}
-
 #discussion-forum-view .ql-syntax {
     background-color: #f7f9fa;
     color : black;
