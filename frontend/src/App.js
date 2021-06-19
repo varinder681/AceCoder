@@ -9,7 +9,7 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import Temp from "./screens/Temp";
 
-import Home from "./screens/HomeScreen";
+import HomeScreen from "./screens/HomeScreen";
 
 import theme from "./ui/Theme";
 const ProblemSolveScreen = React.lazy(() =>
@@ -42,7 +42,7 @@ const App = () => {
           <Route
             path="/problem/:title"
             render={(props) => (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LinearProgress style={{paddingTop : '4rem'}}/>}>
                 <ProblemSolveScreen {...props} />
               </Suspense>
             )}
@@ -64,7 +64,7 @@ const App = () => {
               </Suspense>
             )}
           />
-          <Route path="/" exact render={() => <Home />} />
+          <Route path="/" exact render={() => <HomeScreen />} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

@@ -1,6 +1,7 @@
-import React from "react";
+import React,{useState} from "react";
 import {useSelector} from 'react-redux'
-import { Grid, Paper,LinearProgress } from "@material-ui/core";
+import { Grid, Paper,LinearProgress,Button } from "@material-ui/core";
+
 import { makeStyles } from "@material-ui/core";
 
 import ProblemDescription from '../components/ProblemDescription'
@@ -10,8 +11,6 @@ import EditorScreen from "./EditorScreen";
 const useStyles = makeStyles((theme) => ({
   paper: {
     height: '100vh',
-    overflowY : 'hidden',
-    overflowX : 'hidden',
     [theme.breakpoints.down('sm')] :{
       height : '100%',
       minWidth : '350px',
@@ -26,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#FFF",
     overflowY : 'auto',
     overflowX : 'hidden',
-    padding : '10px',
     height : '100%',
     [theme.breakpoints.down('sm')] : {
       
@@ -44,9 +42,10 @@ const useStyles = makeStyles((theme) => ({
 
 const ProblemSolveScreen = (props) => {
   const classes = useStyles();
+  const [view, setView] = useState("description");
   
   const getProblem = useSelector(state => state.getProblem)
-  const {loading, error,problem} = getProblem
+  const {loading, error,problem, success} = getProblem
 
 
   return (
@@ -57,7 +56,26 @@ const ProblemSolveScreen = (props) => {
         </Grid>}
         
         <Grid container item  md={6} className={classes.description} alignItems='flex-start'>
-          <ProblemDescription {...props} />
+          {success &&<Grid container style={{backgroundColor : "#F3F3F3",height : "6%",position : "sticky", top : 0,zIndex : 10}}>
+              <Grid container item>
+                  <Button onClick={()=>{
+                    setView("description")
+                  }}>Description</Button>
+                  <Button onClick={()=>{
+                    setView("editorial")
+                  }}>Editorial</Button>
+                  <Button onClick={()=>{
+                    setView("discuss")
+                  }}>Discuss</Button>
+                  <Button onClick={()=>{
+                    setView("submissions")
+                  }}>Submissions</Button>
+              </Grid>
+            </Grid>
+          }
+          <Grid style={{height : "94%",width :"100%"}}>
+            <ProblemDescription {...props} view={view} setView={setView} />
+          </Grid>
         </Grid>
         <Grid container item  md={6} className={classes.editor}>
           {!loading && <EditorScreen problem={problem} />}

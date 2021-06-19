@@ -91,6 +91,7 @@ export const getDiscussion = (discussionId) => async dispatch => {
             type : PROBLEM_DISCUSSION_GET_SUCCESS,
             payload : data
         })
+        return;
     } catch (error) {
         dispatch({
             type : PROBLEM_DISCUSSION_GET_FAIL,

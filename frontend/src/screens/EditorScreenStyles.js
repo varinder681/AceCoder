@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor : 'white',
     },
     header: {
-      height: "6%",
+      height : '6%',
       width: "100%",
       borderBottom : "1px solid grey",
       boxSizing : 'border-box'
@@ -16,10 +16,12 @@ const useStyles = makeStyles((theme) => ({
     editor: {
       height: "84%",
       width: "100%",
+      boxSizing : 'border-box'
     },
     footer: {
       height: "10%",
       width: "100%",
+      boxSizing : 'border-box'
     },
     buttonsBottom : {
       [theme.breakpoints.down('xs')] : {

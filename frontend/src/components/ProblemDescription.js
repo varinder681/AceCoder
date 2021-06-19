@@ -2,20 +2,20 @@ import React, { useEffect, useState } from "react";
 
 import { Grid, Button } from "@material-ui/core";
 import Quill from "quill";
-import hljs from 'highlight.js'
+import hljs from "highlight.js";
 import { useDispatch, useSelector } from "react-redux";
 import { getProblemBySearchTitle } from "../actions/problemsActions";
 
-import ProblemDiscussForum from './ProblemDiscussForum/ProblemDiscussForum';
+import ProblemDiscussForum from "./ProblemDiscussForum/ProblemDiscussForum";
 
+import "./ProblemDescription.css";
 import "quill/dist/quill.snow.css";
-import 'highlight.js/styles/github-gist.css'
+import "highlight.js/styles/github-gist.css";
 
-const ProblemDescription = ({ match, history }) => {
+const ProblemDescription = ({ match, history,view,setView }) => {
   const dispatch = useDispatch();
   const [quillDescription, setQuillDescription] = useState(null);
   const [quillEditorial, setQuillEditorial] = useState(null);
-  const [view, setView] = useState("description");
   const getProblem = useSelector((state) => state.getProblem);
   const { problem, loading, error, success } = getProblem;
 
@@ -53,11 +53,11 @@ const ProblemDescription = ({ match, history }) => {
 
     const q = new Quill(".editorial", {
       theme: "snow",
-      modules: { 
+      modules: {
         toolbar: false,
-        syntax : {
-          highlight : text => hljs.highlightAuto(text).value 
-        }
+        syntax: {
+          highlight: (text) => hljs.highlightAuto(text).value,
+        },
       },
 
       //   readOnly : true
@@ -85,46 +85,66 @@ const ProblemDescription = ({ match, history }) => {
       qDescription.disable();
 
       const qEditorial = createQuillEditorial();
-      
+
       qEditorial.setContents(problem.editorial);
       setQuillEditorial(qEditorial);
       qEditorial.disable();
-
     }
   }, [success, problem]);
-  
+
   return (
     <>
       {loading ? (
         <div></div>
       ) : (
-        <Grid container alignItems="flex-start">
-          <Grid container>
-            <Grid container item>
-                <Button variant="contained" onClick={()=>{
-                  setView("description")
-                }}>Description</Button>
-                <Button variant="contained" onClick={()=>{
-                  setView("editorial")
-                }}>Editorial</Button>
-                <Button variant="contained" onClick={()=>{
-                  setView("discuss")
-                }}>Discuss</Button>
-                <Button variant="contained" onClick={()=>{
-                  setView("submissions")
-                }}>Submissions</Button>
-            </Grid>
-          </Grid>
-          <Grid container alignItems="flex-start">
-            <div style={{ width: "100%", padding: "1rem" }}>
+        <Grid container alignContent="flex-start" style={{height : "100%",overflow : 'auto'}}>
+          <div style={{ width: "100%", padding: "1rem" }}>
+            <b style={{ textTransform: "uppercase", fontSize: "1.2rem" }}>
               {problem ? problem.title : ""}
+            </b>
+            <div style={{ paddingTop: "0.5rem" }}>
+              <span
+                style={{
+                  textTransform: "uppercase",
+                  fontSize: "0.8rem",
+                  color:
+                    problem.difficulty === "easy"
+                      ? "green"
+                      : problem.difficulty === "medium"
+                      ? "orange"
+                      : "red",
+                }}
+              >
+                {problem.difficulty}
+              </span>
             </div>
-            <div id="problem-description-view" style={{ width: "100%", display: view==="description" ? "block" : "none" }}></div>
-            <div id="problem-editorial-view" style={{ width: "100%", display: view==="editorial" ? "block" : "none" }}></div>
-            {view === "discuss" && <ProblemDiscussForum />}
-            <div style={{ width: "100%", display: view==="submissions" ? "block" : "none" }}>Submissions feature will be added soon</div>
-            {view==="description" && <div style={{ padding: "1rem" }}>show contributors</div> }
-          </Grid>
+          </div>
+          <div
+            id="problem-description-view"
+            style={{
+              width: "100%",
+              display: view === "description" ? "block" : "none",
+            }}
+          ></div>
+          <div
+            id="problem-editorial-view"
+            style={{
+              width: "100%",
+              display: view === "editorial" ? "block" : "none",
+            }}
+          ></div>
+          {view === "discuss" && <ProblemDiscussForum />}
+          <div
+            style={{
+              width: "100%",
+              display: view === "submissions" ? "block" : "none",
+            }}
+          >
+            Submissions feature will be added soon
+          </div>
+          {view === "description" && (
+            <div style={{ padding: "1rem" }}>show contributors</div>
+          )}
         </Grid>
       )}
     </>

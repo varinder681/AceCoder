@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux'
 import Quill from "quill";
 import hljs from 'highlight.js'
 
+import './DiscussionForumView.css'
 import "quill/dist/quill.snow.css";
 import 'highlight.js/styles/github-gist.css'
 
@@ -29,16 +30,13 @@ const DiscussionForumView = ({contents}) => {
             }
           },
         });
-        q.on("text-change", (delta, oldDelta, source) => {
-            console.log("chabged");
-        })
         return q;
       };
 
     useEffect(() => {
         const q = createView();
         q.setContents(contents)
-        
+        q.disable()
     }, [])
 
     return (

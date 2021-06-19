@@ -10,6 +10,7 @@ import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 
 import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/theme-textmate";
 
 import { customInputOutput,submissionOutput } from "../actions/codeExecutionActions";
@@ -23,7 +24,8 @@ import {
   ArrowDropDown,
   ExpandLess as ExpandLessIcon,
   Save as SaveIcon,
-  CheckCircle as CheckCircleIcon
+  CheckCircle as CheckCircleIcon,
+  Fullscreen as FullScreenIcon
 } from "@material-ui/icons";
 
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
@@ -344,7 +346,6 @@ const EditorScreen = ({
           variant="outlined"
           color="primary"
           style={{
-            height: "100%",
             borderRadius: 0,
             borderBottom: "transparent",
           }}
@@ -368,6 +369,11 @@ const EditorScreen = ({
             Save
           </Button>
         )}
+          <Button title="Full Screen" onClick={() =>{
+            document.querySelector('.ace_editor').requestFullscreen();
+          }}>
+            <FullScreenIcon />
+          </Button>
 
         <Menu
           id="simple-menu"

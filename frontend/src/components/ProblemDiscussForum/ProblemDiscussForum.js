@@ -34,9 +34,9 @@ const ProblemDiscussForum = () => {
     }
 
     const discussionsView = discussions ? discussions.map((discussion => {
-      return <Grid container>
+      return <Grid key={discussion._id} container>
             <Grid item xs={12} style={{padding : "1rem"}}>
-              <Link to={`/problem/discuss/${searchTitle}/${discussion._id}`}>
+              <Link target="_blank" to={`/problem/discuss/${searchTitle}/${discussion._id}`}>
                 {discussion.title}
               </Link>
             </Grid>
@@ -46,16 +46,16 @@ const ProblemDiscussForum = () => {
   return (
     <Grid
       container
-      style={{ boxSizing: "border-box", border: "1px solid black" }}
+      style={{ boxSizing: "border-box",padding : "1rem" }}
     >
-      <Grid container item xs={12}>
+      <Grid container item xs={12} style={{ boxSizing: "border-box", border: "1px solid black" }} >
         <Button>Newest to Oldest</Button>
         <Button>Most Votes</Button>
         <Button style={{ marginLeft: "auto" }} onClick={() => {
             setCreate(prevState => !prevState)
         }} >{create ? "X Cancel" : "+ New"}</Button>
       </Grid>
-      { create && <Grid container style={{ padding: "1rem"}}>
+      { create && <Grid container style={{ paddingTop: "1rem"}}>
         <input
           placeholder="Title"
           value = {title}
