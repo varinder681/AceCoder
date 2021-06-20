@@ -1,5 +1,6 @@
 *::-webkit-scrollbar {
   width: 0.5em;
+  height: 0.5rem;
 }
 
 *::-webkit-scrollbar-track {
@@ -11,4 +12,8 @@
   background-color: darkgrey;
   /* outline: 1px solid slategrey; */
   border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:horizontal {
+
 }

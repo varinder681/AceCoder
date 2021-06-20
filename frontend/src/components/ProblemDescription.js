@@ -119,6 +119,11 @@ const ProblemDescription = ({ match, history,view,setView }) => {
               </span>
             </div>
           </div>
+
+          <hr
+            style={{ width : '100%',height : "1px",background : "grey",border : '1px 0 0 solid grey',margin : "0 1rem 1rem"}}
+          />
+
           <div
             id="problem-description-view"
             style={{

@@ -347,7 +347,6 @@ const EditorScreen = ({
           color="primary"
           style={{
             borderRadius: 0,
-            borderBottom: "transparent",
           }}
         >
           {getSelectedLanguageName()}

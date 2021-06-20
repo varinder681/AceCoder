@@ -6,3 +6,8 @@
     min-height : 100px;
     max-height :80vh;
 }
+
+#discuss-forum .ql-syntax {
+    background-color: #f7f9fa;
+    color : black;
+}

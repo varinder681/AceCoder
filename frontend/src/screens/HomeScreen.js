@@ -25,7 +25,7 @@ const Home = () => {
           <LinearProgress style={{ width: "100%" }} />
         </Grid>
       )}
-      <Grid container direction="column" spacing={4} alignItems="center">
+      <Grid container direction="column" alignItems="center">
         {!loading && (
           <>
             <Upper />

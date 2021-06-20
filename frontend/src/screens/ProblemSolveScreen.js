@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
     overflowX : 'hidden',
     height : '100%',
     [theme.breakpoints.down('sm')] : {
-      
       padding : '1rem',
     }
   },
   editor : {
+    height : '100%',
     [theme.breakpoints.down('sm')]:{
       height : '85vh',
       minWidth : '350px',
@@ -56,7 +56,7 @@ const ProblemSolveScreen = (props) => {
         </Grid>}
         
         <Grid container item  md={6} className={classes.description} alignItems='flex-start'>
-          {success &&<Grid container style={{backgroundColor : "#F3F3F3",height : "6%",position : "sticky", top : 0,zIndex : 10}}>
+          {success &&<Grid container style={{backgroundColor : "#F3F3F3",height : "6%",position : "sticky", top : 0,zIndex : 10,borderBottom : '1px solid grey'}}>
               <Grid container item>
                   <Button onClick={()=>{
                     setView("description")

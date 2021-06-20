@@ -11,7 +11,10 @@ const useStyles = makeStyles((theme) => ({
       height : '6%',
       width: "100%",
       borderBottom : "1px solid grey",
-      boxSizing : 'border-box'
+      boxSizing : 'border-box',
+      [theme.breakpoints.down('sm')]:{
+        height : 'auto',
+      }
     },
     editor: {
       height: "84%",
