@@ -1,61 +1,91 @@
-import User from "../models/userModel.js";
+import User from '../models/userModel.js'
+import asyncHandler from 'express-async-handler'
+import generateToken from '../util/generateToken.js'
+//for creating new user
+//password hasing is done using pre middleware
 
-const register = async (req, res) => {
-  const { name, email, password } = req.body;
-
-  const userExists = await User.findOne({ email });
-
-  if (userExists) {
-    res.status(400);
-    res.json({ error: "User already exists" });
-    return;
-  }
-
-  try {
-    const newUser = await User.create({
-      name,
-      email,
-      password,
-    });
-
-    if (newUser) {
-      res.status(201).json({
-        _id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-      });
+const createUser=asyncHandler( async (req,res)=>{
+    const {name,email,password}=req.body;
+    let user=await User.findOne({email})
+    if(user)
+    {
+        res.status(400)
+        throw  Error("user already exist")
     }
-  } catch (error) {
-    console.log(error);
-    res.status(400);
-    res.json({ error: "Invalid user" });
-  }
-};
+    user= await User.create({
+        name,
+        password,
+        email
+    })
+    if(user)
+    {
+        
+        res.status(201).json({
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            isAdmin:user.isAdmin,
+            token:generateToken(user._id)
+        })
+    }
+    else
+    {
+        res.status.apply(401)
+        throw Error("invalid  credentials")
+    }
+}    
+)
 
-const login = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email });
-    if (user) {
-      if (user.password === password) {
-        res.status(200);
+// to authenticate the user 
+//login is done here
+
+const authUser=asyncHandler(async (req,res)=>{
+   // console.log(req.headers);
+    const{email,password}=req.body
+    const user =await User.findOne({email})
+
+    if(user&&(await user.matchPassword(password)))
+    {
+        const token=generateToken(user._id);
+        // console.log(token)
         res.json({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-        });
-      } else {
-        res.status(400);
-        res.json({ error: "Wrong password" });
-      }
-    } else {
-      res.status(404);
-      res.json({ error: "User does not exits" });
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            isAdmin:user.isAdmin,
+            token
+           
+        })
     }
-  } catch (error) {
-    res.status(500);
-    res.json({ error: "Server timed out" });
-  }
-};
+    else if(user){
+        res.status(401)
+        throw new Error('Invalid Password')
+    }
+    else
+    {
+        res.status(401)
+        throw new Error('Invalid User Email')
+    }
+})
+//get the user data
+const getUserProfile=asyncHandler( async(req,res)=>{
+    const user=await User.findById(req.user._id)
+    if(user)
+    {
+        res.json({
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            isAdmin:user.isAdmin,
+            
+           
+        })
+    }
+    else{
+        res.status(404)
+        throw new Error("user not found")
+    }
+}
 
-export { register, login };
+)
+export {createUser,authUser,getUserProfile}

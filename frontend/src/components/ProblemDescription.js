@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Quill from "quill";
 import hljs from "highlight.js";
 import { useDispatch, useSelector } from "react-redux";

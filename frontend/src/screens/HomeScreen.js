@@ -28,7 +28,7 @@ const Home = () => {
       <Grid container direction="column" alignItems="center">
         {!loading && (
           <>
-            <Upper />
+            {/* <Upper /> */}
             <Grid
               container
               item

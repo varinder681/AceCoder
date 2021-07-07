@@ -76,6 +76,9 @@ const EditorScreen = ({
   const submissionEvaluate = useSelector(state => state.submissionEvaluate);
   const {loading : submissionEvaluateLoading, error : submissionEvaluateError, output : submissionEvaluateOutput} = submissionEvaluate;
   
+  const userLogin = useSelector(state => state.userLogin);
+  const {userInfo} = userLogin;
+
   const getSelectedLanguageName = () => {
     switch (language) {
       case "cpp":
@@ -136,6 +139,10 @@ const EditorScreen = ({
   };
 
   const handleCompile = () => {
+    if(!userInfo){
+      alert("User must be logged in !")
+      return;
+    }
     if (input !== "") {
       setIsCompiling(true);
       setIsSubmitting(false);
@@ -156,6 +163,10 @@ const EditorScreen = ({
   };
 
   const handleSubmission = () => {
+    if(!userInfo){
+      alert("User must be logged in !")
+      return;
+    }
       setIsSubmitting(true);
       setIsCompiling(false);
       dispatch(

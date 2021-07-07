@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react'
-import {useSelector} from 'react-redux'
+// import {useSelector} from 'react-redux'
 import Quill from "quill";
 import hljs from 'highlight.js'
 
@@ -37,6 +37,7 @@ const DiscussionForumView = ({contents}) => {
         const q = createView();
         q.setContents(contents)
         q.disable()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

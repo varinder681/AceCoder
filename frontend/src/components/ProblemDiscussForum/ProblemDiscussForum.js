@@ -15,10 +15,11 @@ const ProblemDiscussForum = () => {
     const problem = useSelector(state => state.getProblem.problem);
     const {_id : problemId, searchTitle} = problem;
 
-    const userInfo = useSelector(state => state.userLogin.userInfo);
-
     const discussionsGetAll = useSelector(state => state.discussionsGetAll)
     const {loading : discussionsLoading, discussions} = discussionsGetAll
+
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo} = userLogin;
 
     const [title , setTitle] = useState("");
     const [text,setText] = useState({ops : []});
@@ -28,7 +29,10 @@ const ProblemDiscussForum = () => {
     },[])
 
     const discussionSubmitHandler = (e) => {
-        e.preventDefault();
+        if(!userInfo){
+          alert("User must be logged in !");
+          return;
+        }
         if(title!=="")
         dispatch(submit(userInfo,title,text,problemId));
     }

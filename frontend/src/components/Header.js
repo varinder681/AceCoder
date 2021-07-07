@@ -7,8 +7,6 @@ import {
   AppBar,
   Toolbar,
   makeStyles,
-  Tabs,
-  Tab,
   Button,
   ButtonGroup,
   useMediaQuery,
@@ -54,7 +52,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
   },
   tab: {
-    fontFamily: "Railway",
+    color : "white",
+    // fontFamily: "Railway",
     textTransform: "none",
     fontWeight: "700",
     fontSize: "1rem",
@@ -137,23 +136,18 @@ const Header = ({ history }) => {
 
   const tabs = (
     <>
-      <Tabs
-        value={value}
-        onChange={(e, newValue) => setValue(newValue)}
-        className={classes.tabContainer}
-        indicatorColor="primary"
-      >
+      <Grid style={{marginLeft : 'auto'}}>
         {routes.map((route) => (
-          <Tab
+          <Button
             key={`${route.activeIndex} ${route.link}`}
             className={classes.tab}
             label={route.name}
             component={Link}
             to={route.link}
             draggable={false}
-          />
+          >{route.name}</Button>
         ))}
-      </Tabs>
+      </Grid>
       {!userInfo && (
         <ButtonGroup>
           <Button

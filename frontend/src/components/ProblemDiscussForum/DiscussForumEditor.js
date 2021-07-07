@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect} from 'react'
 import Quill from 'quill';
 import hljs from 'highlight.js'
 
@@ -47,6 +47,7 @@ const DiscussForumEditor = ({id,setText}) => {
         setText(q.getContents())
       });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return (    
         <div id={id}></div>
