@@ -7,6 +7,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import AboutUsScreen from "./screens/AboutUsScreen";
 import Temp from "./screens/Temp";
 
 import HomeScreen from "./screens/HomeScreen";
@@ -64,6 +65,7 @@ const App = () => {
               </Suspense>
             )}
           />
+          <Route path="/about-us" exact component={AboutUsScreen} />
           <Route path="/" exact render={() => <HomeScreen />} />
         </Switch>
       </BrowserRouter>

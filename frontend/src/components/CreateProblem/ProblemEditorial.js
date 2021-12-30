@@ -19,6 +19,7 @@ const CreateProblemEditorial = () => {
     <Grid style={{padding : '1rem',width : '100%'}}>
       <input
         onChange={handleChange}
+        placeholder="Enter Problem Title Here...."
         value={title}
         style={{ width: "100%", height: "2rem",marginBottom : '1rem' }}
       />

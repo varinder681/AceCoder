@@ -21,6 +21,7 @@ const CreateProblemDescription = () => {
       <input
         onChange={handleChange}
         value={title}
+        placeholder="Enter Problem Title Here...."
         style={{ width: "100%", height: "2rem",marginBottom : '1rem' }}
       />
       <TextEditor id="problem-description" />

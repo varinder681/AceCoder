@@ -24,16 +24,16 @@ const CreateProblemScreen = ({ match }) => {
           style={{ textDecoration: "none" }}
           to={match.url + "/description"}
         >
-          <Button>Description</Button>
+          <Button>1. Description</Button>
         </Link>
         <Link style={{ textDecoration: "none" }} to={`${match.url}/editorial`}>
-          <Button>Editorial</Button>
+          <Button>2. Editorial</Button>
         </Link>
         <Link style={{ textDecoration: "none" }} to={`${match.url}/solution`}>
-          <Button>Solution</Button>
+          <Button>3. Solution</Button>
         </Link>
         <Link style={{ textDecoration: "none" }} to={`${match.url}/submit`}>
-          <Button>Submit</Button>
+          <Button>4. Submit</Button>
         </Link>
       </Grid>
       <Grid
