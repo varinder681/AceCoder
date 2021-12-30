@@ -8,6 +8,9 @@ import {
     USER_LOGIN_RESET
 } from '../constants/userConstants'
 
+const user=localStorage.getItem("userInfo")
+const userInfoFromStorage=user?JSON.parse(user):null
+
 
 const initialStateUserRegisterReducer = {loading : false,error : null}
 
@@ -35,7 +38,8 @@ export const userRegisterReducer = (state=initialStateUserRegisterReducer,action
 }
 
 const initialStateUserLoginReducer = {
-    loading : false,error : null
+    loading : false,error : null,
+    userInfo : userInfoFromStorage
 }
 
 export const userLoginReducer = (state=initialStateUserLoginReducer,action) => {

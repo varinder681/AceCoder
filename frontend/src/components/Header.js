@@ -63,15 +63,20 @@ const useStyles = makeStyles((theme) => ({
   login: {
     marginLeft: "25px",
     borderRadius: "15px",
-    width: "90px",
+    // width: "90px",
+    backgroundColor : "#71BE58",
     "&:hover": {
-      color: "white",
+      backgroundColor : "#468a30",
     },
   },
   signup: {
     marginRight: "25px",
     borderRadius: "15px",
-    width: "90px",
+    backgroundColor : "#71BE58",
+    "&:hover": {
+      backgroundColor : "#468a30",
+    },
+    // width: "90px",
   },
   menu: {
     marginLeft: "auto",
@@ -179,7 +184,7 @@ const Header = ({ history }) => {
           className={`${classes.signup} ${classes.login}`}
           onClick={handleLogout}
         >
-          logout
+          {`${userInfo.name} {logout}`}
         </Button>
       )}
     </>
