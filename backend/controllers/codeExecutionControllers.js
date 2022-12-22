@@ -67,7 +67,7 @@ const customInputEvaluate = async (req, res) => {
         headers: {
           "Content-Type": "application/json"
         },
-      };
+    };
 
     try {
         // console.log(program.stdin);
