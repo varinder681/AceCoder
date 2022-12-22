@@ -37,7 +37,7 @@ const Home = () => {
               style={{ marginTop: "6rem" }}
             >
               <HomeTable questions={problems ? problems : null} />
-              <HomeSide />
+              {/* <HomeSide /> */}
             </Grid>
           </>
         )}

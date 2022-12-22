@@ -20,7 +20,6 @@ export const getProblemBySearchTitle = async (req,res) => {
 export const getProblemsAll = async (req, res) => {
     try {
         const problems = await Problem.find({})
-        
         res.json(problems)
     } catch (error) {
         res.status(500)
